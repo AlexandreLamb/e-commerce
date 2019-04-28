@@ -6,6 +6,7 @@ utiliser gitBash sous windows
 Instalation :
 
 telecharger node : https://nodejs.org/en/download/ ( verifier l'installation node -v dans l'invite de commande )
+telecharger composer :  https://getcomposer.org/
 
 npm install
 
