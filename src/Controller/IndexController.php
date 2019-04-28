@@ -24,4 +24,5 @@ class IndexController extends AbstractController
   {
       return $this->render('base.html.twig', []);
   }
+  
 }

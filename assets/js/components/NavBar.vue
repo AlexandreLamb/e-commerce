@@ -22,9 +22,30 @@
           <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
         </b-nav-form>
 
-        <b-nav-item-dropdown right>
+
+
+
+        <b-nav-form v-if=" !connected ">
+          <b-nav-item-dropdown right >
           <!-- Using 'button-content' slot -->
-          <template slot="button-content"><em>User</em></template>
+          <template slot="button-content"><em>Loggin</em></template>
+          <b-form-input v-model="input.username" placeholder="Enter your name" type="text"></b-form-input>
+          <b-form-input v-model="input.password" placeholder="Enter your password" type="password"></b-form-input>
+          <b-button v-on:click="login" >Login</b-button>
+          <router-link class="nav-item" tag="li" to="/register" active-class="active">
+                <b-button class="nav-link">Regsiter</b-button>
+                    </router-link>
+         </b-nav-item-dropdown>
+        </b-nav-form>
+
+
+
+
+
+        <b-nav-item-dropdown v-else right >
+          <!-- Using 'button-content' slot -->
+          <template slot="button-content"><em>Loggin</em></template>
+          <template  slot="button-content"><em>{{userName}}</em></template>
           <b-dropdown-item href="#">Profile</b-dropdown-item>
           <b-dropdown-item href="#">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
@@ -36,6 +57,26 @@
 
 <script>
     export default {
-        name: 'NavBar'
+        name: 'NavBar',
+        data () {
+          return {
+            connected : false,
+            userName : "test",
+            showLoginForm : true,
+            input :{
+              username:"" ,
+              password:"" 
+            }
+          }
+          
+        },
+        methods : {
+
+          login : function(){
+            console.log(this.input.username + "   " + this.input.password);
+          }
+
+        }
+
     }
 </script>
