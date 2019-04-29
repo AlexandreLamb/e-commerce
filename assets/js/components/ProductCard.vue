@@ -2,8 +2,8 @@
     <div>
   <b-card
     :title="product.name"
-    img-src="https://picsum.photos/600/300/?image=25"
-    img-alt="Image"
+    :img-src="product.file"
+    img-alt="No Image"
     img-top
     tag="article"
     style="max-width: 20rem;"

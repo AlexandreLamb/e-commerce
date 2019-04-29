@@ -36,18 +36,23 @@ class ProductController extends AbstractController
     /**
      * @Route("/add/product", name="add_product")
      */
-    public function product()
+    public function product(Request $request)
     {
         $data = json_decode($request->getContent(),true);
 
         $entityManager = $this->getDoctrine()->getManager();
+        $user = $this->getDoctrine()
+        ->getRepository(User::class)
+        ->find($data['userId']);
 
         $product = new Product();
         $product->setName($data['name']);
         $product->setPrice($data['price']);
         $product->setDescription($data['description']);
-        $product->setFile($data['file']);
+        $product->setPhoto($data['file']);
         $product->setCategorie($data['categorie']);
+        $product->setNbrVentes(0);
+        $product->setVendeur($user);
 
 
         // tell Doctrine you want to (eventually) save the Product (no queries yet)
