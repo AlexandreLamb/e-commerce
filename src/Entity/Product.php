@@ -31,6 +31,27 @@ class Product
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $categorie;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $nbrVentes;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $vendeur;
+
+    /**
+     * @ORM\Column(type="blob", nullable=true)
+     */
+    private $photo;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +89,54 @@ class Product
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?string
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(string $categorie): self
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getNbrVentes(): ?string
+    {
+        return $this->nbrVentes;
+    }
+
+    public function setNbrVentes(string $nbrVentes): self
+    {
+        $this->nbrVentes = $nbrVentes;
+
+        return $this;
+    }
+
+    public function getVendeur(): ?User
+    {
+        return $this->vendeur;
+    }
+
+    public function setVendeur(?User $vendeur): self
+    {
+        $this->vendeur = $vendeur;
+
+        return $this;
+    }
+
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto($photo): self
+    {
+        $this->photo = $photo;
 
         return $this;
     }

@@ -1,7 +1,7 @@
 <template>
     <div>
   <b-card
-    title="Card Title"
+    :title="product.productName"
     img-src="https://picsum.photos/600/300/?image=25"
     img-alt="Image"
     img-top
@@ -10,15 +10,31 @@
     class="mb-2"
   >
     <b-card-text>
-      Some quick example text to build on the card title and make up the bulk of the card's content.
+      {{product.productDescription}}
     </b-card-text>
-
-    <b-button href="#" variant="primary">Go somewhere</b-button>
+    <b-card-text> {{product.price}} Euros</b-card-text>
+    <b-button-group>
+      <b-button href="#" variant="warning">Voir le produit</b-button>
+      <b-button href="#" variant="success">Ajouter au Panier</b-button>
+    </b-button-group>
+    
   </b-card>
 </div>
 </template>
 <script>
   export default {
+    props: {
+      product : {
+        type : Object,
+        default: {
+          productName: "Pas de nom de produit",
+          productDescription: "Pas de description",
+          price : 0,
+        }
+          }
+      }
+
+    ,
     data() {
       return {
       

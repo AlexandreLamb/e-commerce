@@ -8,7 +8,7 @@
             <p>This is the Seconde PAge of our Vue.js application.</p>
         </div>
         <div class="container">
-  <div class="row" v-for="n in 4">
+        <div class="row" v-for="n in 3" >
         <div  class="col-sm">
          <product-card></product-card>
         </div>

@@ -1,25 +1,33 @@
 <template>
    <div>
   <b-navbar toggleable="lg" type="dark" variant="info">
-    <router-link class="navbar-brand" to = "/home">E-commerce</router-link>
+    <router-link class="navbar-brand" to = "/home">Boomerang</router-link>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <router-link class="nav-item" tag="li" to="/home" active-class="active">
-                        <a class="nav-link">Home</a>
-                    </router-link>
+        <b-nav-item-dropdown>
+          <!-- Using 'button-content' slot -->
+          <template slot="button-content"><em>Catégories</em></template>
+          <b-dropdown-item to="/livre">Livres</b-dropdown-item>
+          <b-dropdown-item to="/vetement">Vêtements</b-dropdown-item>
+          <b-dropdown-item to="/sport">Sport et Loisirs</b-dropdown-item>
+          <b-dropdown-item to="/musique">Musiques</b-dropdown-item>
+        </b-nav-item-dropdown>
         <router-link class="nav-item" tag="li" to="/test" active-class="active">
-                        <a class="nav-link">Seconde Page</a>
+                        <a class="nav-link">Ventes flash</a>
+                    </router-link>
+        <router-link class="nav-item" tag="li" to="/panier" active-class="active">
+                        <a class="nav-link">Panier</a>
                     </router-link>
       </b-navbar-nav>
-
+      
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <b-nav-form>
-          <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-          <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+          <b-form-input size="md" class="mr-sm-2" placeholder="Search"></b-form-input>
+          <b-button size="md" class="my-2 my-sm-0" type="submit">Search</b-button>
         </b-nav-form>
 
 
@@ -40,6 +48,8 @@
 
         <b-nav-item-dropdown v-else right >
           <!-- Using 'button-content' slot -->
+
+          <template slot="button-content"><em>Login</em></template>
           <template  slot="button-content"><em>{{userName}}</em></template>
           <b-dropdown-item href="#">Profil</b-dropdown-item>
           <b-dropdown-item href="#">Mes commandes</b-dropdown-item>
