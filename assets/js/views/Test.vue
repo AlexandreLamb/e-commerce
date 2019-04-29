@@ -7,11 +7,35 @@
         <div class="row col">
             <p>This is the Seconde PAge of our Vue.js application.</p>
         </div>
+        <div class="container">
+  <div class="row" v-for="n in 4">
+        <div  class="col-sm">
+         <product-card></product-card>
+        </div>
+        <div class="col-sm" >
+         <product-card></product-card>
+        </div>
+        <div class="col-sm">
+         <product-card></product-card>
+        </div>
+  </div>
+</div>
     </div>
+    
 </template>
 
 <script>
+    import ProductCard from '../components/ProductCard.vue';
     export default {
-        name: 'home'
+        name: 'home',
+        components :{
+        productCard : ProductCard,
+        },
+         data () {
+          return {
+            
+          }
+          
+        },
     }
 </script>

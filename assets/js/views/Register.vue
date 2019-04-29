@@ -100,7 +100,6 @@
       onSubmit(evt) {
         evt.preventDefault()
         var self = this;
-        this.validationEmail();
         if(this.validation1() && this.validation2() && this.isEmailUse){
        axios({
         method: 'post',
