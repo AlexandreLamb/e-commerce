@@ -36,7 +36,6 @@ class UserController extends AbstractController
      * @Route("/check/user/mail", methods={"POST"}, name="check_user_mail")
      */
         public function checkUserMail(Request $request){
-            $repository = $this->getDoctrine()->getRepository(User::class);
             $data = json_decode($request->getContent(),true);
             $user = $this->getDoctrine()
             ->getRepository(User::class)
@@ -49,5 +48,20 @@ class UserController extends AbstractController
     return new Response('false');
 
         }
-    
+        /**
+         * @Route("/check/user", methods={"POST"}, name="check_user")
+         */
+    public function checkUser (Request $request) {
+        $data = json_decode($request->getContent(),true);
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(['email' => $data['email']]);
+            if (!$user){
+                return new Response('false');
+            } else {
+                if (  password_verify($data['password'],$user->getPassword() ) ) {
+                    return new response('true');
+                }   
+            }
+    }
 }
