@@ -38,13 +38,17 @@ class ProductController extends AbstractController
      */
     public function product()
     {
-        
+        $data = json_decode($request->getContent(),true);
+
         $entityManager = $this->getDoctrine()->getManager();
 
         $product = new Product();
-        $product->setName('Keyboard');
-        $product->setPrice(1999);
-        $product->setDescription('Ergonomic and stylish!');
+        $product->setName($data['name']);
+        $product->setPrice($data['price']);
+        $product->setDescription($data['description']);
+        $product->setFile($data['file']);
+        $product->setCategorie($data['categorie']);
+
 
         // tell Doctrine you want to (eventually) save the Product (no queries yet)
         $entityManager->persist($product);
@@ -52,7 +56,7 @@ class ProductController extends AbstractController
         // actually executes the queries (i.e. the INSERT query)
         $entityManager->flush();
 
-        return new Response('Saved new product with id ' .$product->getId());
+        return new Response('Saved new product with name ' .$product->getName());
     }
 
     /**

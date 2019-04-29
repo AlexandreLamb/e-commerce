@@ -47,10 +47,10 @@
         </b-nav-form>
 
         <b-nav-item-dropdown v-else right >
-          <template  slot="button-content"><em>{{userName}}</em></template>
+          <template  slot="button-content"><em>{{user.username}}</em></template>
           <b-dropdown-item href="#">Profil</b-dropdown-item>
           <b-dropdown-item href="#">Mes commandes</b-dropdown-item>
-          <b-dropdown-item v-on:click="signout()"> Sign Out</b-dropdown-item>
+          <b-dropdown-item v-on:click="signOut()"> Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -60,17 +60,18 @@
 
 <script>
 import axios from 'axios';
+import { isNullOrUndefined } from 'util';
     export default {
         name: 'NavBar',
         data () {
           return {
-            connected : false,
-            userName : "test",
+            connected : !isNullOrUndefined(localStorage.user),
             showLoginForm : true,
             input :{
               email:"" ,
               password:"" 
-            }
+            },
+            user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
           }
           
         },
@@ -86,15 +87,22 @@ import axios from 'axios';
           password: self.input.password,
         }
           }).then(function (response) {
-            console.log(response);
-                self.connected = response.data;
+               if(response.data != false){
+                self.user = response.data;
+                self.connected = true;
+                localStorage.user = JSON.stringify(self.user);
+               }
           })
           .catch(function (error) {
           console.log(error);
         })
-          }
-
+          },
+         signOut : function() {
+          localStorage.removeItem('user');
+          this.user = null;
+          this.connected = false;
         }
+        },
 
     }
 </script>

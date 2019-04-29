@@ -81,7 +81,8 @@ class UserController extends AbstractController
                 return new Response('false');
             } else {
                 if (  password_verify($data['password'],$user->getPassword() ) ) {
-                    return new Response('true');
+                    $jsonContent = $this->serializer->serialize($user, 'json');
+                    return new Response($jsonContent);
                 }   
             }
             return new Response('false');
