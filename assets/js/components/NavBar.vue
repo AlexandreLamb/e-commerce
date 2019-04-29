@@ -47,9 +47,6 @@
         </b-nav-form>
 
         <b-nav-item-dropdown v-else right >
-          <!-- Using 'button-content' slot -->
-
-          <template slot="button-content"><em>Login</em></template>
           <template  slot="button-content"><em>{{userName}}</em></template>
           <b-dropdown-item href="#">Profil</b-dropdown-item>
           <b-dropdown-item href="#">Mes commandes</b-dropdown-item>
@@ -89,6 +86,7 @@ import axios from 'axios';
           password: self.input.password,
         }
           }).then(function (response) {
+            console.log(response);
                 self.connected = response.data;
           })
           .catch(function (error) {

@@ -18,11 +18,11 @@ export default new VueRouter({
         { path: '/test', component: Test },
         { path: '/register', component : Register},
         { path: '/home' , component : Home },
-        { path: '/addProduct' , component : AddProduct}
+        { path: '/addProduct' , component : AddProduct},
         { path: '/panier' , component : Panier},
         { path: '/livre' , component : Livre},
         { path: '/vetement' , component : Vetement},
         { path: '/sport' , component : Sportetloisirs},
         { path: '/musique' , component : Musique},
-    ],
+    ]
 });

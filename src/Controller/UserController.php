@@ -81,9 +81,10 @@ class UserController extends AbstractController
                 return new Response('false');
             } else {
                 if (  password_verify($data['password'],$user->getPassword() ) ) {
-                    return new response('true');
+                    return new Response('true');
                 }   
             }
+            return new Response('false');
     }
         
     /**
