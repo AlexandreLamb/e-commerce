@@ -37,25 +37,23 @@
           <b-nav-item-dropdown right >
           <!-- Using 'button-content' slot -->
           <template slot="button-content"><em>Login</em></template>
-          <b-form-input v-model="input.username" placeholder="Enter your name" type="text"></b-form-input>
+          <b-form-input v-model="input.email" placeholder="Enter your email" type="text"></b-form-input>
           <b-form-input v-model="input.password" placeholder="Enter your password" type="password"></b-form-input>
-          <b-button v-on:click="login" >Login</b-button>
+          <b-button v-on:click="login()" >Login</b-button>
           <router-link class="nav-item" tag="li" to="/register" active-class="active">
                 <b-button class="nav-link">Register</b-button>
                     </router-link>
          </b-nav-item-dropdown>
         </b-nav-form>
 
-
-
-
-
         <b-nav-item-dropdown v-else right >
           <!-- Using 'button-content' slot -->
+
           <template slot="button-content"><em>Login</em></template>
           <template  slot="button-content"><em>{{userName}}</em></template>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          <b-dropdown-item href="#">Profil</b-dropdown-item>
+          <b-dropdown-item href="#">Mes commandes</b-dropdown-item>
+          <b-dropdown-item v-on:click="signout()"> Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -64,6 +62,7 @@
 </template>
 
 <script>
+import axios from 'axios';
     export default {
         name: 'NavBar',
         data () {
@@ -72,7 +71,7 @@
             userName : "test",
             showLoginForm : true,
             input :{
-              username:"" ,
+              email:"" ,
               password:"" 
             }
           }
@@ -81,7 +80,20 @@
         methods : {
 
           login : function(){
-            console.log(this.input.username + "   " + this.input.password);
+            var self = this;
+            axios({
+        method: 'post',
+        url: '/check/user',
+        data: {
+          email: self.input.email,
+          password: self.input.password,
+        }
+          }).then(function (response) {
+                self.connected = response.data;
+          })
+          .catch(function (error) {
+          console.log(error);
+        })
           }
 
         }
