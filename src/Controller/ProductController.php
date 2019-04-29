@@ -34,7 +34,7 @@ class ProductController extends AbstractController
        
     }
     /**
-     * @Route("/register/product", name="product")
+     * @Route("/add/product", name="add_product")
      */
     public function product()
     {
