@@ -75,7 +75,7 @@
       onSubmit(evt) {
         evt.preventDefault()
         var self = this;
-        if(this.validation1() && this.validation2() && this.isEmailUse){
+        
        axios({
         method: 'post',
         url: '/register/user',
@@ -85,12 +85,12 @@
           password: self.form.password,
         }
           }).then(function (response) {
-            this.$router.push('home'); 
+          
           })
           .catch(function (error) {
           console.log(error);
         })
-      }       
+      
       },
       
     },
