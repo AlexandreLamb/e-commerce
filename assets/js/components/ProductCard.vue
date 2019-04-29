@@ -1,7 +1,7 @@
 <template>
     <div>
   <b-card
-    :title="product.productName"
+    :title="product.name"
     img-src="https://picsum.photos/600/300/?image=25"
     img-alt="Image"
     img-top
@@ -10,7 +10,7 @@
     class="mb-2"
   >
     <b-card-text>
-      {{product.productDescription}}
+      {{product.description}}
     </b-card-text>
     <b-card-text> {{product.price}} Euros</b-card-text>
     <b-button-group>
@@ -26,10 +26,12 @@
     props: {
       product : {
         type : Object,
-        default: {
-          productName: "Pas de nom de produit",
-          productDescription: "Pas de description",
-          price : 0,
+        default() { 
+          return{   name : "Pas de nom de produit",
+                    description : "Pas de description",
+                    price : 0,
+                    categorie : "none"
+          }
         }
           }
       }
