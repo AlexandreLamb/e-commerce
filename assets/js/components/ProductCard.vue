@@ -13,7 +13,10 @@
       {{product.productDescription}}
     </b-card-text>
     <b-card-text> {{product.price}} Euros</b-card-text>
-    <b-button href="#" variant="primary">Voir le produit</b-button>
+    <b-button-group>
+      <b-button href="#" variant="warning">Voir le produit</b-button>
+      <b-button href="#" variant="success">Ajouter au Panier</b-button>
+    </b-button-group>
     
   </b-card>
 </div>
