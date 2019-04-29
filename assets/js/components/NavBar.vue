@@ -7,19 +7,27 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <router-link class="nav-item" tag="li" to="/home" active-class="active">
-                        <a class="nav-link">Home</a>
+        <b-nav-item-dropdown>
+          <!-- Using 'button-content' slot -->
+          <template slot="button-content"><em>Catégories</em></template>
+          <b-dropdown-item href="#">Livres</b-dropdown-item>
+          <b-dropdown-item href="#">Vêtements</b-dropdown-item>
+          <b-dropdown-item href="#">Sport et Loisirs</b-dropdown-item>
+          <b-dropdown-item href="#">Musiques</b-dropdown-item>
+        </b-nav-item-dropdown>
+        <router-link class="nav-item" tag="li" to="/test" active-class="active">
+                        <a class="nav-link">Ventes flash</a>
                     </router-link>
         <router-link class="nav-item" tag="li" to="/test" active-class="active">
-                        <a class="nav-link">Seconde Page</a>
+                        <a class="nav-link">Panier</a>
                     </router-link>
       </b-navbar-nav>
-
+      
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <b-nav-form>
-          <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-          <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+          <b-form-input size="md" class="mr-sm-2" placeholder="Search"></b-form-input>
+          <b-button size="md" class="my-2 my-sm-0" type="submit">Search</b-button>
         </b-nav-form>
 
 
@@ -28,7 +36,7 @@
         <b-nav-form v-if=" !connected ">
           <b-nav-item-dropdown right >
           <!-- Using 'button-content' slot -->
-          <template slot="button-content"><em>Loggin</em></template>
+          <template slot="button-content"><em>Login</em></template>
           <b-form-input v-model="input.username" placeholder="Enter your name" type="text"></b-form-input>
           <b-form-input v-model="input.password" placeholder="Enter your password" type="password"></b-form-input>
           <b-button v-on:click="login" >Login</b-button>
@@ -44,7 +52,7 @@
 
         <b-nav-item-dropdown v-else right >
           <!-- Using 'button-content' slot -->
-          <template slot="button-content"><em>Loggin</em></template>
+          <template slot="button-content"><em>Login</em></template>
           <template  slot="button-content"><em>{{userName}}</em></template>
           <b-dropdown-item href="#">Profile</b-dropdown-item>
           <b-dropdown-item href="#">Sign Out</b-dropdown-item>
