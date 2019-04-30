@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-
+use Symfony\Component\Validator\Constraints\DateTimeInterface;
 
 class UserController extends AbstractController
 {
@@ -43,11 +43,18 @@ class UserController extends AbstractController
         {
             $data = json_decode($request->getContent(),true);
             $user = new User();
-            $password = password_hash($data['password'],PASSWORD_BCRYPT);  
+            $password = password_hash($data['password'],PASSWORD_BCRYPT); 
+                $user-> setUserlastname($data['userlastname']);
                 $user->setEmail($data['email']);
                 $user->setUsername($data['username']);
                 $user->setPassword($password);
                 $user->setPainPassword($password);
+                $user-> setTelephone($data['telephone']);
+                $user-> setAdresse($data['adresse']);
+                $user-> setVille($data['ville']);
+                $user-> setDateNaissance(NULL);
+
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
@@ -118,7 +125,7 @@ class UserController extends AbstractController
     /**
      * @Route("/get/users", methods={"GET"}, name="get_users")
      */
-    public function getProducts(){
+    public function getUsers(){
         $entityManager = $this->getDoctrine()->getManager();
         $users = $this->getDoctrine()
         ->getRepository(User::class)
@@ -127,6 +134,33 @@ class UserController extends AbstractController
         return new Response($jsonContent);
     }
     /**
+     * @Route("/update/user", methods={"POST"}, name="update_user")
+     */
+    public function update(Request $request, UserPasswordEncoderInterface $encoder)
+        {
+            $data = json_decode($request->getContent(),true);
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($data['userId']);
+
+
+                $user-> setUserlastname($data['userlastname']);
+                $user->setEmail($data['email']);
+                $user->setUsername($data['username']);
+                $user-> setTelephone($data['telephone']);
+                $user-> setAdresse($data['adresse']);
+                $user-> setVille($data['ville']);
+                $user-> setDateNaissance(NULL);
+
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $jsonContent = $this->serializer->serialize($user, 'json');
+    }
+   /**
      * @Route("/get/panier/user/{id}", methods={"GET"}, name="get_users")
      */
     public function getPanier(Int $id){

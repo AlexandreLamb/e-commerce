@@ -11,6 +11,7 @@ import Sportetloisirs from '../views/Sportetloisirs.vue';
 import Musique from '../views/Musique.vue';
 import Profil from '../views/Profil.vue';
 
+
 Vue.use(VueRouter);
 
 export default new VueRouter({
@@ -27,5 +28,6 @@ export default new VueRouter({
         { path: '/musique' , component : Musique},
         { path: '/profil' , component : Profil},
         { path: '/addProduct' , component : AddProduct},
+        
     ]
 });
