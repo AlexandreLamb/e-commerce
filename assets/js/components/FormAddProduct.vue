@@ -1,5 +1,15 @@
 <template>
   <div>
+    <b-alert
+      :show="dismissCountDown"
+      dismissible
+      name = "oui"
+      variant="warning"
+      @dismissed="dismissCountDown=0"
+      @dismiss-count-down="countDownChanged"
+    >
+      Nouveau produit ajouté, vous allez être redirigé à la page d'acceuil dans {{ dismissCountDown }} secondes
+    </b-alert>
       <b-container>
             <b-row>
             <b-col>
@@ -81,13 +91,15 @@
             </b-col>
      </b-row>
         </b-container>
+        
   </div>
+  
 </template>
 
 <script>
     import axios from 'axios'
     import ProductCard from '../components/ProductCard.vue';
-    import { isNullOrUndefined } from 'util';
+    import { isNullOrUndefined, callbackify } from 'util';
 
   export default {
       components :{
@@ -113,7 +125,9 @@
           file:null,
           categorie :null,
         },
-         user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user)
+         user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
+         dismissSecs: 5,
+        dismissCountDown: 0
       }
     },
     methods: {
@@ -141,13 +155,20 @@
           userId : self.user.id,
         }
           }).then(function (response) {
-          
+            self.showAlert();
+            self.$router.push('/home');
           })
           .catch(function (error) {
           console.log(error);
         })
         }
       },
+      countDownChanged(dismissCountDown) {
+        this.dismissCountDown = dismissCountDown
+      },
+      showAlert() {
+        this.dismissCountDown = this.dismissSecs
+      }
       
     },
     computed : {
