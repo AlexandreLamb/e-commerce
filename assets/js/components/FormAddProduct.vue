@@ -101,7 +101,7 @@
           imgSrc:"",
         options: [
           { value: null, text: 'Choisissez une categorie ' },
-          { value: 'Sport et loisir', text: 'Sport et loisir' },
+          { value: 'SporteEtLoisirs', text: 'Sport et loisirs' },
           { value: 'Musiques', text: 'Musiques' },
           { value: 'Vetements', text: 'Vetements' },
           { value: 'Livres', text: 'Livres'}
@@ -141,7 +141,7 @@
           userId : self.user.id,
         }
           }).then(function (response) {
-          
+            self.$router.push("/home");
           })
           .catch(function (error) {
           console.log(error);

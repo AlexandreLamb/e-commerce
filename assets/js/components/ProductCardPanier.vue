@@ -1,6 +1,7 @@
 <template>
     <div>
-  <b-card
+        
+<b-card
     :title="product.name"
     :img-src="product.file"
     img-alt="No Image"
@@ -9,15 +10,12 @@
     style="max-width: 20rem;"
     class="mb-2"
   >
-    <b-card-text>
-      {{product.description}}
-    </b-card-text>
+  
     <b-card-text> {{product.price}} Euros</b-card-text>
-    <b-button-group>
-      <b-button v-on:click="toggleVisibility()" variant="warning">Voir le produit</b-button>
-      <b-button v-on:click="addPannier()" variant="success">Ajouter au Panier</b-button>
-    </b-button-group>
-    
+         <b-button-group> 
+          <b-button v-on:click="toggleVisibility()" variant="warning">Voir le produit</b-button>
+          <b-button v-on:click="deleteProduct()" variant="warning">Supprimer le produit</b-button>
+         </b-button-group>
   </b-card>
 </div>
 </template>
@@ -46,11 +44,11 @@
       }
     },
     methods: {
-      addPannier(){
+      deleteProduct(){
         var self = this;
         axios({
         method: 'post',
-        url: '/add/product/panier',
+        url: '/delete/product/panier',
         data: {
           userId: self.user.id,
           productId: self.product.id,

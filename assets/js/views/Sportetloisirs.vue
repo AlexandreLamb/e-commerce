@@ -1,35 +1,63 @@
 <template>
     <div> 
-         <h1 align="center">Nos articles Sports et Loisirs</h1>
-         <div class="container">
-        <div class="row" v-for="n in 2" >
-        <div  class="col-sm">
-         <product-card></product-card>
+        <h1 align="center">Nos livres</h1>
+        <div>
+            <b-collapse id="collapse-1" v-model="showCollapse" class="mt-2">
+            <b-card>
+                <button type="button" v-on:click="showCollapse= !showCollapse" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                </button>
+                <p class="card-text">{{product.name}}</p>
+                 <b-card>{{product.description}}</b-card>
+            </b-card>
+            </b-collapse>
         </div>
-        <div class="col-sm" >
-         <product-card></product-card>
-        </div>
-        <div class="col-sm">
-         <product-card></product-card>
+         <div class="container pt-3">
+        <b-row>
+            <product-card v-for="sportEtLoisir in sportEtLoisirs" :key="sportEtLoisir.id" :product="sportEtLoisir" class="col-sm-6 col-md-4 col-lg-3" @cliked="toggleVisibility"></product-card>
+        </b-row>
         </div>
   </div>
-</div>
-         </div>
+         
 </template>
 
 <script>
     import ProductCard from '../components/ProductCard.vue';
+    import axios from 'axios';
     export default {
-        name: 'home',
         components :{
         productCard : ProductCard,
         },
          data () {
           return {
-            
+            sportEtLoisirs : [],
+            product: {}
           }
           
         },
+        methods :{
+            getSportEtLoisirs : function(){
+                var self = this;
+                axios({
+                    method: 'get',
+                    url: '/get/products/sportetloisirs',
+                }).then(function (response) {
+                self.sportEtLoisirs = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+            },
+            toggleVisibility(value){
+                console.log(value);
+                this.product = value;
+                this.showCollapse = true;
+                window.scrollTo({ top: 0, behavior: 'smooth' })                 
+            }
+        },
+        mounted : function(){
+            this.getSportEtLoisirs();
+        }
     }
 </script>
 
