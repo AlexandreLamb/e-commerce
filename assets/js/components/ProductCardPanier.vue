@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-show=" !isDelete ">
         
 <b-card
     :title="product.name"
@@ -13,7 +13,7 @@
   
     <b-card-text> {{product.price}} Euros</b-card-text>
          <b-button-group> 
-          <b-button v-on:click="toggleVisibility()" variant="warning">Voir le produit</b-button>
+          <b-button  variant="warning">Voir le produit</b-button>
           <b-button v-on:click="deleteProduct()" variant="warning">Supprimer le produit</b-button>
          </b-button-group>
   </b-card>
@@ -40,25 +40,16 @@
     data() {
       return {
          user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
-         visibility : false
+         visibility : false,
+         isDelete : false
       }
     },
     methods: {
       deleteProduct(){
-        var self = this;
-        axios({
-        method: 'post',
-        url: '/delete/product/panier',
-        data: {
-          userId: self.user.id,
-          productId: self.product.id,
-        }
-          }).then(function (response) {
-            console.log(response.data);
-          })
-          .catch(function (error) {
-          console.log(error);
-        })
+          var self = this;
+          console.log('zfe')
+        self.$emit('cliked' , self.product);
+        //this.isDelete = ! this.isDelete;
       },
       toggleVisibility(){
         var self = this;

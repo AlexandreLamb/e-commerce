@@ -5,7 +5,7 @@
         <div class="container pt-3">
              
         <b-row>
-            <product-card-panier v-for="product in user.panier" :key="product.id" :product="product" class="col-sm-6 col-md-4 col-lg-3"></product-card-panier>
+            <product-card-panier @cliked="deleteProduct" v-for="product in user.panier" :key="product.id" :product="product" class="col-sm-6 col-md-4 col-lg-3"></product-card-panier>
         </b-row>
         </div>
     </div>
@@ -49,7 +49,25 @@
           total += element.price;
         });
         return total;
-      }
+      },
+      deleteProduct(product){
+        var self = this;
+        axios({
+        method: 'post',
+        url: '/delete/product/panier',
+        data: {
+          userId: self.user.id,
+          productId: product.id,
+        }
+          }).then(function (response) {
+            console.log(response.data)
+            localStorage.user = JSON.stringify(response.data); 
+
+          })
+          .catch(function (error) {
+          console.log(error);
+        })
+    },
     },
     created : function(){
       this.getPannier();

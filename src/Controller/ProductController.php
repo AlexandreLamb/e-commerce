@@ -102,5 +102,7 @@ class ProductController extends AbstractController
         $jsonContent = $this->serializer->serialize($products, 'json');
         return new Response($jsonContent);
     }
+
+    
     
 }
