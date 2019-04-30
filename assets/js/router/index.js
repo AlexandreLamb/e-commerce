@@ -9,6 +9,7 @@ import Livre from '../views/Livre.vue';
 import Vetement from '../views/Vetement.vue';
 import Sportetloisirs from '../views/Sportetloisirs.vue';
 import Musique from '../views/Musique.vue';
+import Profil from '../views/Profil.vue';
 import Addproduct from '../views/AddProduct.vue';
 
 Vue.use(VueRouter);
@@ -25,6 +26,7 @@ export default new VueRouter({
         { path: '/vetement' , component : Vetement},
         { path: '/sport' , component : Sportetloisirs},
         { path: '/musique' , component : Musique},
+        { path: '/profil' , component : Profil},
         { path: '/addProduct' , component : AddProduct},
     ]
 });
