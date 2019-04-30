@@ -44,8 +44,7 @@
       Prénom
     </h1>
     <p>
-      It uses utility classes for typography and spacing to space content out within the larger
-      container.
+      {{user.username}}
     </p>
   
   <hr class="my-4">
@@ -53,8 +52,7 @@
       Adresse mail
     </h1>
     <p>
-      It uses utility classes for typography and spacing to space content out within the larger
-      container.
+      {{user.email}}
     </p>
 
   <hr class="my-4">
@@ -70,3 +68,17 @@
 </div>
 
 </template>
+<script>
+    import { isNullOrUndefined } from 'util';
+    export default {
+        name: 'profil',
+        components :{
+        },
+         data () {
+          return {
+              user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
+          }
+        },
+    }
+</script>
+

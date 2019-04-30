@@ -73,4 +73,16 @@ class ProductController extends AbstractController
         $jsonContent = $this->serializer->serialize($products, 'json');
         return new Response($jsonContent);
     }
+    /**
+     * @Route("/get/products/musiques", methods={"GET"}, name="get_products_categorie")
+     */
+    public function getProductsCategorie(){
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $products = $this->getDoctrine()
+        ->getRepository(Product::class)
+        ->findBy(['categorie' => 'Musiques']);
+        $jsonContent = $this->serializer->serialize($products, 'json');
+        return new Response(count($products));
+    }
 }
