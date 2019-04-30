@@ -57,7 +57,7 @@
         </b-nav-form>
 
         <b-nav-item-dropdown v-else right >
-          <template  slot="button-content"><em>{{user.username}}</em></template>
+          <template  slot="button-content"><em>{{user.username}} {{user.userlastname}}</em></template>
           <b-dropdown-item to="/profil">Profil</b-dropdown-item>
           <b-dropdown-item href="#">Mes commandes</b-dropdown-item>
           <b-dropdown-item v-on:click="signOut()"> Sign Out</b-dropdown-item>
