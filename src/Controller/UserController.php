@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Product;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -87,6 +88,32 @@ class UserController extends AbstractController
             }
             return new Response('false');
     }
+        /**
+         * @Route("/add/product/panier", methods={"POST"}, name="add_product")
+         */
+        public function addPanier (Request $request) {
+            $data = json_decode($request->getContent(),true);
+
+            $product = $this->getDoctrine()
+                ->getRepository(Product::class)
+                ->findOneBy(['id' => $data['productId']]);
+
+            $user = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findOneBy(['id' => $data['userId']]);
+            
+                if (!$product && !$user){
+                    return new Response('false');
+                } else {
+                   $user->addPanier($product);
+                   $entityManager = $this->getDoctrine()->getManager();
+                   $entityManager->persist($user);
+                   $entityManager->flush();
+                   $jsonContent = $this->serializer->serialize($user, 'json');
+                   return new Response($jsonContent);                
+                }
+                return new Response('false');
+        }
         
     /**
      * @Route("/get/users", methods={"GET"}, name="get_users")
@@ -97,6 +124,18 @@ class UserController extends AbstractController
         ->getRepository(User::class)
         ->findAll();
         $jsonContent = $this->serializer->serialize($users, 'json');
+        return new Response($jsonContent);
+    }
+    /**
+     * @Route("/get/panier/user/{id}", methods={"GET"}, name="get_users")
+     */
+    public function getPanier(Int $id){
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findOneBy(['id' => $id]);
+        
+        $jsonContent = $this->serializer->serialize($user->getPanier(), 'json');
         return new Response($jsonContent);
     }
     

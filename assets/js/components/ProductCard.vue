@@ -14,14 +14,16 @@
     </b-card-text>
     <b-card-text> {{product.price}} Euros</b-card-text>
     <b-button-group>
-      <b-button href="#" variant="warning">Voir le produit</b-button>
-      <b-button href="#" variant="success">Ajouter au Panier</b-button>
+      <b-button v-on:click="toggleVisibility()" variant="warning">Voir le produit</b-button>
+      <b-button v-on:click="addPannier()" variant="success">Ajouter au Panier</b-button>
     </b-button-group>
     
   </b-card>
 </div>
 </template>
 <script>
+      import { isNullOrUndefined } from 'util';
+      import axios from 'axios';
   export default {
     props: {
       product : {
@@ -39,11 +41,32 @@
     ,
     data() {
       return {
-      
+         user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
+         visibility : false
       }
     },
     methods: {
-     
+      addPannier(){
+        var self = this;
+        axios({
+        method: 'post',
+        url: '/add/product/panier',
+        data: {
+          userId: self.user.id,
+          productId: self.product.id,
+        }
+          }).then(function (response) {
+            console.log(response.data);
+          })
+          .catch(function (error) {
+          console.log(error);
+        })
+      },
+      toggleVisibility(){
+        var self = this;
+        self.$emit('cliked' , self.product);
+                self.visibility = !self.visibility
+      }
     }
   }
 </script>

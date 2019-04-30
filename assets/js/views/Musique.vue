@@ -1,9 +1,22 @@
 <template>
     <div> 
         <h1 align="center">Nos Musiques</h1>
-         <div class="container">
+        <div>
+            <b-collapse id="collapse-1" v-model="showCollapse" class="mt-2">
+            <b-card>
+                <button type="button" v-on:click="showCollapse= !showCollapse" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                </button>
+                <p class="card-text">{{musique.name}}</p>
+                 <b-card>{{musique.description}}</b-card>
+            </b-card>
+            </b-collapse>
+</div>
+
+         <div class="container pt-3">
+             
         <b-row>
-            <product-card v-for="musique in musiques" :key="musique.id" :product="musique" class="col-sm-6 col-md-4 col-lg-3"></product-card>
+            <product-card v-for="musique in musiques" :key="musique.id" :product="musique" class="col-sm-6 col-md-4 col-lg-3" @cliked="toggleVisibility"></product-card>
         </b-row>
         </div>
   </div>
@@ -20,7 +33,9 @@
         },
          data () {
           return {
-            musiques : []
+            musiques : [],
+            musique : {},
+            showCollapse : false,
           }
           
         },
@@ -36,6 +51,12 @@
                 .catch(function (error) {
                     console.log(error);
                 })
+            },
+            toggleVisibility(value){
+                console.log(value);
+                this.musique = value;
+                this.showCollapse = true;
+                window.scrollTo({ top: 0, behavior: 'smooth' })                 
             }
         },
         mounted : function(){
