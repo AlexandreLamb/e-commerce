@@ -31,7 +31,8 @@
          data () {
           return {
             sportEtLoisirs : [],
-            product: {}
+            product: {},
+            showCollapse : false,
           }
           
         },
