@@ -43,9 +43,15 @@ class User
      */
     private $products;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="acheteur")
+     */
+    private $panier;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->panier = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -126,6 +132,37 @@ class User
             // set the owning side to null (unless already changed)
             if ($product->getVendeur() === $this) {
                 $product->setVendeur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getPanier(): Collection
+    {
+        return $this->panier;
+    }
+
+    public function addPanier(Product $panier): self
+    {
+        if (!$this->panier->contains($panier)) {
+            $this->panier[] = $panier;
+            $panier->setAcheteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanier(Product $panier): self
+    {
+        if ($this->panier->contains($panier)) {
+            $this->panier->removeElement($panier);
+            // set the owning side to null (unless already changed)
+            if ($panier->getAcheteur() === $this) {
+                $panier->setAcheteur(null);
             }
         }
 

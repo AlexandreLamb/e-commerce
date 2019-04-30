@@ -43,7 +43,7 @@ class ProductController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getDoctrine()
         ->getRepository(User::class)
-        ->find($data['userId']);
+        ->find(6);
 
         $product = new Product();
         $product->setName($data['name']);
@@ -55,10 +55,12 @@ class ProductController extends AbstractController
         $product->setVendeur($user);
 
 
-        // tell Doctrine you want to (eventually) save the Product (no queries yet)
-        $entityManager->persist($product);
 
-        // actually executes the queries (i.e. the INSERT query)
+        $entityManager->persist($product);
+        $entityManager->flush();
+
+        $user->addProduct($product);
+        $entityManager->persist($user);
         $entityManager->flush();
 
         return new Response('Saved new product with name ' .$product->getName());

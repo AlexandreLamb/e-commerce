@@ -128,6 +128,7 @@
         evt.preventDefault()
         var self = this;
         if(self.user != null){
+          console.log(self.user.id);
        axios({
         method: 'post',
         url: '/add/product',
