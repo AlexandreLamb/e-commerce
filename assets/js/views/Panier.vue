@@ -2,17 +2,22 @@
     <div>
         <br>
         <h1 align="center">Votre panier est vide, achetez vite !</h1>
-        <product-card v-for="product in user.panier" :key="product.id" :product="product" class="col-sm-6 col-md-4 col-lg-3"></product-card>
+        <div class="container pt-3">
+             
+        <b-row>
+            <product-card-panier v-for="product in user.panier" :key="product.id" :product="product" class="col-sm-6 col-md-4 col-lg-3"></product-card-panier>
+        </b-row>
+        </div>
     </div>
 </template>
 
 <script>
       import { isNullOrUndefined } from 'util';
-      import ProductCard from '../components/ProductCard.vue';
+      import ProductCardPanier from '../components/ProductCardPanier.vue';
       import axios from 'axios';
   export default {
       components :{
-        productCard : ProductCard,
+        ProductCardPanier : ProductCardPanier,
         },
     
     data() {

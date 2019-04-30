@@ -7,11 +7,11 @@
                 <button type="button" v-on:click="showCollapse= !showCollapse" class="close" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                 </button>
-                <p class="card-text">{{musique.name}}</p>
-                 <b-card>{{musique.description}}</b-card>
+                <p class="card-text">{{product.name}}</p>
+                 <b-card>{{product.description}}</b-card>
             </b-card>
             </b-collapse>
-</div>
+        </div>
 
          <div class="container pt-3">
              
@@ -34,7 +34,7 @@
          data () {
           return {
             musiques : [],
-            musique : {},
+            product : {},
             showCollapse : false,
           }
           
@@ -54,7 +54,7 @@
             },
             toggleVisibility(value){
                 console.log(value);
-                this.musique = value;
+                this.product = value;
                 this.showCollapse = true;
                 window.scrollTo({ top: 0, behavior: 'smooth' })                 
             }
