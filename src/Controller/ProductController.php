@@ -43,7 +43,7 @@ class ProductController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getDoctrine()
         ->getRepository(User::class)
-        ->find(6);
+        ->find($data['userId']);
 
         $product = new Product();
         $product->setName($data['name']);
@@ -53,14 +53,10 @@ class ProductController extends AbstractController
         $product->setCategorie($data['categorie']);
         $product->setNbrVentes(0);
         $product->setVendeur($user);
-
+        
 
 
         $entityManager->persist($product);
-        $entityManager->flush();
-
-        $user->addProduct($product);
-        $entityManager->persist($user);
         $entityManager->flush();
 
         return new Response('Saved new product with name ' .$product->getName());
