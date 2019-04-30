@@ -1,6 +1,8 @@
 <template>
     <div>   
         <carousel></carousel>
+                <b-form-input type="text" v-model="searchName" placeholder="Search" @keyup.enter="search()" ></b-form-input>
+
         <h1> Nos meilleures ventes </h1>
         <div class="text-center" v-show="onLoad">
             <b-spinner label="Spinning"></b-spinner>
@@ -10,7 +12,6 @@
             <b-spinner variant="success" label="Spinning"></b-spinner>
             <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
         </div>
-        <b-form-input type="text" v-model="searchName" placeholder="Search" @keyup.enter="search()" ></b-form-input>
         <b-row>
             <product-card v-for="product in products" :key="product.id" :product="product" class="col-sm-6 col-md-4 col-lg-3"></product-card>
         </b-row>

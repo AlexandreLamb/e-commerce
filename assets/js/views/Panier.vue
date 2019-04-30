@@ -1,7 +1,7 @@
 <template>
     <div>
         <br>
-        <h1 align="center">Votre panier est vide, achetez vite !</h1>
+        <h1 align="center">Votre panier est vide, achetez vite ! {{totalPanier}}</h1>
         <div class="container pt-3">
              
         <b-row>
@@ -23,6 +23,7 @@
     data() {
       return {
          user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
+         totalPanier : 0
       }
     },
     methods: {
@@ -35,10 +36,19 @@
           }).then(function (response) {
             console.log(response.data);
             self.user.panier = response.data
+            self.totalPanier = self.countPrice(self.user.panier);
+
           })
           .catch(function (error) {
           console.log(error);
         })
+      },
+      countPrice(panier){
+        var total = 0;
+        panier.forEach(element => {
+          total += element.price;
+        });
+        return total;
       }
     },
     created : function(){
