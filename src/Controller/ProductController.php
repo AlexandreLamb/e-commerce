@@ -33,8 +33,9 @@ class ProductController extends AbstractController
         $this->serializer = new Serializer(array($this->normalizer), array($this->encoder));
        
     }
+
     /**
-     * @Route("/add/product", name="add_product")
+     * @Route("/add/product", methods={"POST"}, name="add_product")
      */
     public function product(Request $request)
     {
@@ -42,24 +43,25 @@ class ProductController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getDoctrine()
-        ->getRepository(User::class)
+        ->getRepository(User::class)    
         ->find($data['userId']);
+
 
         $product = new Product();
         $product->setName($data['name']);
         $product->setPrice($data['price']);
         $product->setDescription($data['description']);
-        $product->setPhoto($data['file']);
         $product->setCategorie($data['categorie']);
         $product->setNbrVentes(0);
         $product->setVendeur($user);
+        $product->setImg($data['img']);
         
 
 
         $entityManager->persist($product);
         $entityManager->flush();
 
-        return new Response('Saved new product with name ' .$product->getName());
+        return new Response("product add");
     }
 
     /**
@@ -70,6 +72,7 @@ class ProductController extends AbstractController
         $products = $this->getDoctrine()
         ->getRepository(Product::class)
         ->findAll();
+
         $jsonContent = $this->serializer->serialize($products, 'json');
         return new Response($jsonContent);
     }
@@ -85,4 +88,5 @@ class ProductController extends AbstractController
         $jsonContent = $this->serializer->serialize($products, 'json');
         return new Response($jsonContent);
     }
+    
 }

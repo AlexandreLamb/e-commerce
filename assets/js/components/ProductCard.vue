@@ -2,11 +2,12 @@
     <div>
   <b-card
     :title="product.name"
-    :img-src="product.file"
+    :img-src="product.img"
     img-alt="No Image"
     img-top
     tag="article"
     style="max-width: 20rem;"
+    heigth="200"
     class="mb-2"
   >
     <b-card-text>

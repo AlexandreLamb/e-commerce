@@ -48,14 +48,14 @@ class Product
     private $vendeur;
 
     /**
-     * @ORM\Column(type="blob", nullable=true)
-     */
-    private $photo;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="panier")
      */
     private $acheteur;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $img;
 
     public function getId(): ?int
     {
@@ -134,18 +134,6 @@ class Product
         return $this;
     }
 
-    public function getPhoto()
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto($photo): self
-    {
-        $this->photo = $photo;
-
-        return $this;
-    }
-
     public function getAcheteur(): ?User
     {
         return $this->acheteur;
@@ -154,6 +142,18 @@ class Product
     public function setAcheteur(?User $acheteur): self
     {
         $this->acheteur = $acheteur;
+
+        return $this;
+    }
+
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    public function setImg(string $img): self
+    {
+        $this->img = $img;
 
         return $this;
     }

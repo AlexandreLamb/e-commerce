@@ -96,7 +96,7 @@ class UserController extends AbstractController
             return new Response('false');
     }
         /**
-         * @Route("/add/product/panier", methods={"POST"}, name="add_product")
+         * @Route("/add/product/panier", methods={"POST"}, name="add_product_panier")
          */
         public function addPanier (Request $request) {
             $data = json_decode($request->getContent(),true);
@@ -136,7 +136,7 @@ class UserController extends AbstractController
     /**
      * @Route("/update/user", methods={"POST"}, name="update_user")
      */
-    public function update(Request $request, UserPasswordEncoderInterface $encoder)
+    public function update(Request $request)
         {
             $data = json_decode($request->getContent(),true);
             
@@ -159,7 +159,9 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
             $jsonContent = $this->serializer->serialize($user, 'json');
-    }
+            return new Response($jsonContent);
+
+        }
    /**
      * @Route("/get/panier/user/{id}", methods={"GET"}, name="get_users")
      */

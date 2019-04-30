@@ -1,6 +1,14 @@
 <template>
   <div>
-      <b-container>
+    <div class="text-center" v-show="!onLoad">
+  <b-spinner label="Spinning"></b-spinner>
+  <b-spinner type="grow" label="Spinning"></b-spinner>
+  <b-spinner variant="primary" label="Spinning"></b-spinner>
+  <b-spinner variant="primary" type="grow" label="Spinning"></b-spinner>
+  <b-spinner variant="success" label="Spinning"></b-spinner>
+  <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
+</div>
+      <b-container v-show="onLoad">
             <b-row>
             <b-col>
     <b-form @submit="onSubmit">
@@ -98,10 +106,11 @@
       },
     data() {
       return {
+          onLoad : true,
           imgSrc:"",
         options: [
           { value: null, text: 'Choisissez une categorie ' },
-          { value: 'SporteEtLoisirs', text: 'Sport et loisirs' },
+          { value: 'SportEtLoisirs', text: 'Sport et loisirs' },
           { value: 'Musiques', text: 'Musiques' },
           { value: 'Vetements', text: 'Vetements' },
           { value: 'Livres', text: 'Livres'}
@@ -112,23 +121,30 @@
           name: '',
           file:null,
           categorie :null,
+          img : ''
         },
          user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user)
       }
     },
     methods: {
          onFileChange(e) {
+           var self = this;
              console.log('test');
       const file = e.target.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+   reader.onload = function () {
+          self.form.img = reader.result
+      };
       this.imgSrc = URL.createObjectURL(file);
-    
+  
         },
 
       onSubmit(evt) {
         evt.preventDefault()
         var self = this;
         if(self.user != null){
-          console.log(self.user.id);
+          this.onLoad = ! this.onLoad;
        axios({
         method: 'post',
         url: '/add/product',
@@ -139,6 +155,7 @@
           file: self.form.file.name,
           categorie : self.form.categorie,
           userId : self.user.id,
+          img : self.form.img
         }
           }).then(function (response) {
             self.$router.push("/home");
