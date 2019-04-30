@@ -45,7 +45,6 @@
           v-model="form.password"
           type="password"
           required
-          :state="validationRegex"
         ></b-form-input>
         <b-form-invalid-feedback :state="validationRegex">
         Le mot de passe doit contenire au moins une minuscule, une majuscule,
@@ -70,8 +69,16 @@
       <b-form-valid-feedback :state="validationSamePassword">
         C'est en effet le meme
       </b-form-valid-feedback>
-      </b-form-group>
 
+     <b-form-group label="Quel sera votre utilisation de notre site ? ">
+      <b-form-radio-group
+        v-model="selected"
+        :options="options"
+        name="radio-inline"
+      ></b-form-radio-group>
+    </b-form-group>
+
+      </b-form-group>
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
@@ -83,6 +90,11 @@
   export default {
     data() {
       return {
+        selected: 'first',
+        options: [
+          { text: 'Acheteur', value: 'A' },
+          { text: 'Vendeur', value: 'V' },
+        ],
         form: {
           email: '',
           username: '',
@@ -100,7 +112,7 @@
       onSubmit(evt) {
         evt.preventDefault()
         var self = this;
-        if(this.validation1() && this.validation2() && this.isEmailUse){
+        if(this.validation1()  && this.isEmailUse){
        axios({
         method: 'post',
         url: '/register/user',
@@ -110,7 +122,7 @@
           password: self.form.password,
         }
           }).then(function (response) {
-            this.$router.push('home'); 
+           self.$router.push('/home'); 
           })
           .catch(function (error) {
           console.log(error);

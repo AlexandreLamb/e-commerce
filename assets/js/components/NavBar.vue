@@ -21,6 +21,16 @@
         <router-link class="nav-item" tag="li" to="/panier" active-class="active">
                         <a class="nav-link">Panier</a>
                     </router-link>
+        <router-link v-if="!connected" class="nav-item" tag="li" to="/register" active-class="active">
+                        <a class="nav-link"> S'inscrire a l'espace vente</a>
+                    </router-link>
+        <b-nav-item-dropdown v-else >
+          <template  slot="button-content"><em>Espace Vente</em></template>  
+          <b-dropdown-item to="/addProduct">Vendre un Produit</b-dropdown-item>
+          <b-dropdown-item href="#">Mes Ventes</b-dropdown-item>
+          <b-dropdown-item v-on:click="signOut()"> Sign Out</b-dropdown-item>
+        </b-nav-item-dropdown>
+        
       </b-navbar-nav>
       
       <!-- Right aligned nav items -->
@@ -101,6 +111,7 @@ import { isNullOrUndefined } from 'util';
           localStorage.removeItem('user');
           this.user = null;
           this.connected = false;
+            this.$router.push('/home');
         }
         },
 

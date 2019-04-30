@@ -52,6 +52,11 @@ class Product
      */
     private $photo;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="panier")
+     */
+    private $acheteur;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +142,18 @@ class Product
     public function setPhoto($photo): self
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getAcheteur(): ?User
+    {
+        return $this->acheteur;
+    }
+
+    public function setAcheteur(?User $acheteur): self
+    {
+        $this->acheteur = $acheteur;
 
         return $this;
     }
