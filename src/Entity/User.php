@@ -48,6 +48,41 @@ class User
      */
     private $panier;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $userlastname;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $adresse;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $ville;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $telephone;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateNaissance;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\CarteBleu", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $cb;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $img;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -165,6 +200,96 @@ class User
                 $panier->setAcheteur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUserlastname(): ?string
+    {
+        return $this->userlastname;
+    }
+
+    public function setUserlastname(string $userlastname): self
+    {
+        $this->userlastname = $userlastname;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getDateNaissance(): ?\DateTimeInterface
+    {
+        return $this->dateNaissance;
+    }
+
+    public function setDateNaissance(?\DateTimeInterface $dateNaissance): self
+    {
+        $this->dateNaissance = $dateNaissance;
+
+        return $this;
+    }
+
+    public function getCb(): ?CarteBleu
+    {
+        return $this->cb;
+    }
+
+    public function setCb(?CarteBleu $cb): self
+    {
+        $this->cb = $cb;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $cb === null ? null : $this;
+        if ($newUser !== $cb->getUser()) {
+            $cb->setUser($newUser);
+        }
+
+        return $this;
+    }
+
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    public function setImg(?string $img): self
+    {
+        $this->img = $img;
 
         return $this;
     }

@@ -1,14 +1,45 @@
 <template>
   <div>
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+ 
       <b-form-group
         id="input-group-1"
-        label="Email address:"
+        label="Nom :"
         label-for="input-1"
         description=""
       >
         <b-form-input
           id="input-1"
+          v-model="form.userlastname"
+          type="text"
+          required
+          placeholder="Entrez votre nom de famille"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-2"
+        label="Prénom:"
+        label-for="input-2"
+        description=""
+      >
+        <b-form-input
+          id="input-2"
+          v-model="form.username"
+          type="text"
+          required
+          placeholder="Entrez votre prénom"
+        ></b-form-input>
+      </b-form-group>
+
+<b-form @submit="onSubmit" @reset="onReset" v-if="show">
+      <b-form-group
+        id="input-group-3"
+        label="Email address:"
+        label-for="input-3"
+        description=""
+      >
+        <b-form-input
+          id="input-3"
           v-model="form.email"
           type="email"
           required
@@ -24,24 +55,68 @@
       </b-form-group>
 
       <b-form-group
-        id="input-group-1"
-        label="Nom d'utilisateur:"
-        label-for="input-2"
+        id="input-group-4"
+        label="Date de naissance"
+        label-for="input-4"
         description=""
       >
         <b-form-input
-          id="input-2"
-          v-model="form.username"
+          id="input-4"
+          v-model="form.date_naissance"
+          type="date"
+          required
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-5"
+        label="Ville:"
+        label-for="input-5"
+        description=""
+      >
+        <b-form-input
+          id="input-5"
+          v-model="form.ville"
           type="text"
           required
-          placeholder="Entrez un nom d'utilisateur"
+          placeholder="Entrez votre ville"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-6"
+        label="Adresse de livraison:"
+        label-for="input-6"
+        description=""
+      >
+        <b-form-input
+          id="input-6"
+          v-model="form.adresse"
+          type="text"
+          required
+          placeholder="Entrez votre adresse de livraison"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-7"
+        label="Numéro de téléphone:"
+        label-for="input-7"
+        description=""
+      >
+        <b-form-input
+          id="input-7"
+          v-model="form.telephone"
+          type="tel"
+          required
+          placeholder="Entrez votre numéro de téléphone"
         ></b-form-input>
       </b-form-group>
 
 
-      <b-form-group id="input-group-3" label="Password :" label-for="input-3">
+      <b-form-group id="input-group-8" label="Password :" label-for="input-8">
         <b-form-input
-          id="input-3"
+          id="input-8"
           v-model="form.password"
           type="password"
           required
@@ -55,9 +130,9 @@
       </b-form-valid-feedback>
         
       </b-form-group>
-      <b-form-group id="input-group-4" label=" Confirm Password :" label-for="input-4">
+      <b-form-group id="input-group-9" label=" Confirm Password :" label-for="input-9">
         <b-form-input
-          id="input-4"
+          id="input-9"
           type="password"
           v-model="form.confirmPassword"
           :state="validationSamePassword"
@@ -96,10 +171,15 @@
           { text: 'Vendeur', value: 'V' },
         ],
         form: {
-          email: '',
           username: '',
+          userlastname: '',
+          email: '',
+          telephone: '',
           password: '',
-          confirmPassword : ''
+          confirmPassword : '',
+          date_naissance : '',
+          ville : '',
+          adresse : ''
         },
         show: true,
         isSamePassword: false,
@@ -107,19 +187,27 @@
         regex : RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})"),
       }
     },
+
+
     methods: {
 
       onSubmit(evt) {
         evt.preventDefault()
         var self = this;
+        console.log(new Date(this.form.date_naissance));
         if(this.validation1()  && this.isEmailUse){
        axios({
         method: 'post',
         url: '/register/user',
         data: {
-          email: self.form.email,
+          userlastname: self.form.userlastname,
           username: self.form.username,
+          email: self.form.email,
+          telephone: self.form.telephone,
           password: self.form.password,
+          date_naissance : self.form.date_naissance,
+          ville: self.form.ville,
+          adresse: self.form.adresse,
         }
           }).then(function (response) {
            self.$router.push('/home'); 
@@ -132,10 +220,15 @@
       onReset(evt) {
         evt.preventDefault()
         // Reset our form values
-        this.form.email = ''
+        this.form.userlastname = ''
         this.form.username = ''
+        this.form.email = ''
+        this.form.telephone = ''
         this.form.password = ''
         this.form.confirmPassword=''
+        this.form.date_naissance=''
+        this.form.ville=''
+        this.form.adresse=''
         this.show = false
         this.$nextTick(() => {
           this.show = true
@@ -183,5 +276,4 @@
     }
     }
     }
-  
 </script>

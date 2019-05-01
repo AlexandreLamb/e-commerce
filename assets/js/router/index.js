@@ -12,6 +12,7 @@ import Musique from '../views/Musique.vue';
 import Profil from '../views/Profil.vue';
 import MesVentes from '../views/MesVentes.vue';
 
+
 Vue.use(VueRouter);
 
 export default new VueRouter({
@@ -28,5 +29,6 @@ export default new VueRouter({
         { path: '/musique' , component : Musique},
         { path: '/profil' , component : Profil},
         { path: '/mesVentes' , component : MesVentes},
-    ]
+        { path: '/addProduct' , component : AddProduct},
+         ]
 });
