@@ -29,6 +29,7 @@
     methods: {
       getPannier(){
         var self = this;
+         self.user = isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user)
         axios({
         method: 'get',
         url: '/get/panier/user/'+self.user.id,

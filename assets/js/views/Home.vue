@@ -39,6 +39,9 @@
           
         },
         methods :{
+            getImg(product){
+        
+      },
             getProducts(){
                 self = this;
                 self.onLoad = true;
@@ -47,7 +50,7 @@
             url: '/get/products',
           }).then(function (response) {
             console.log(response.data);
-            self.products = response.data; 
+            self.products = response.data;
             self.onLoad = false;
 
           })

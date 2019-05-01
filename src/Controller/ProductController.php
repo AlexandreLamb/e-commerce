@@ -3,6 +3,7 @@
 namespace App\Controller;
 use App\Entity\Product;
 use App\Entity\User;
+use App\Entity\Attachments;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,6 +47,10 @@ class ProductController extends AbstractController
         ->getRepository(User::class)    
         ->find($data['userId']);
 
+        $attachments = new Attachments();
+        $entityManager->persist($attachments);
+
+        $attachments->setFilename($data['img']);
 
         $product = new Product();
         $product->setName($data['name']);
@@ -54,7 +59,8 @@ class ProductController extends AbstractController
         $product->setCategorie($data['categorie']);
         $product->setNbrVentes(0);
         $product->setVendeur($user);
-        $product->setImg($data['img']);
+        $product->addAttachment($attachments);
+        //$product->setImg($data['img']);
         
 
 
@@ -71,8 +77,7 @@ class ProductController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $products = $this->getDoctrine()
         ->getRepository(Product::class)
-        ->findAll();
-
+        ->findAllProduct();
         $jsonContent = $this->serializer->serialize($products, 'json');
         return new Response($jsonContent);
     }
@@ -98,11 +103,27 @@ class ProductController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $products = $this->getDoctrine()
         ->getRepository(Product::class)
-        ->findBy(['categorie' => $categories]);
+        ->findAllProductByCat($categories);
         $jsonContent = $this->serializer->serialize($products, 'json');
         return new Response($jsonContent);
     }
 
-    
+    /**
+     * @Route("get/img/{idProduct}", methods={"GET"}, name="get_img")
+     */
+     public function getImg(Int $idProduct){
+        $entityManager = $this->getDoctrine()->getManager();
+        $product = $this->getDoctrine()
+        ->getRepository(Product::class)
+        ->find($idProduct); 
+        $arrayAttachments = array();
+        foreach ($product->getAttachments() as $key => $img) {
+            $arrayAttachments[] = $img->getFilename();
+        }
+        $jsonContent = $this->serializer->serialize(array('img'=>$arrayAttachments[0]), 'json');
+        return new Response($jsonContent);
+
+
+     }
     
 }

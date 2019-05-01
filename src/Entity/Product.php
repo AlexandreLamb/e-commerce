@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -53,9 +55,21 @@ class Product
     private $acheteur;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $img;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Attachments", mappedBy="Product", orphanRemoval=true)
+     */
+    private $attachments;
+
+    public function __construct()
+    {
+        $this->attachments = new ArrayCollection();
+    }
+
+    
 
     public function getId(): ?int
     {
@@ -146,15 +160,48 @@ class Product
         return $this;
     }
 
-    public function getImg(): ?string
+    public function getImg()
     {
         return $this->img;
     }
 
-    public function setImg(string $img): self
+    public function setImg($img): self
     {
         $this->img = $img;
 
         return $this;
     }
+
+    /**
+     * @return Collection|Attachments[]
+     */
+    public function getAttachments(): Collection
+    {
+        return $this->attachments;
+    }
+
+    public function addAttachment(Attachments $attachment): self
+    {
+        if (!$this->attachments->contains($attachment)) {
+            $this->attachments[] = $attachment;
+            $attachment->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttachment(Attachments $attachment): self
+    {
+        if ($this->attachments->contains($attachment)) {
+            $this->attachments->removeElement($attachment);
+            // set the owning side to null (unless already changed)
+            if ($attachment->getProduct() === $this) {
+                $attachment->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 }

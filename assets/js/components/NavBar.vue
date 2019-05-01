@@ -93,6 +93,7 @@ import { isNullOrUndefined } from 'util';
                if(response.data != false){
                 self.user = response.data;
                 self.connected = true;
+                console.log('test');
                 localStorage.user = JSON.stringify(self.user);
                }
           })
