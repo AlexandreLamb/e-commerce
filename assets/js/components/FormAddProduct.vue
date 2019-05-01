@@ -1,5 +1,16 @@
 <template>
   <div>
+    <b-alert
+      :show="dismissCountDown"
+      dismissible
+      name = "oui"
+      variant="warning"
+      @dismissed="dismissCountDown=0"
+      @dismiss-count-down="countDownChanged"
+    >
+      Nouveau produit ajouté, vous allez être redirigé à la page d'acceuil dans {{ dismissCountDown }} secondes
+    </b-alert>
+      <b-container>
     <div class="text-center" v-show="!onLoad">
   <b-spinner label="Spinning"></b-spinner>
   <b-spinner type="grow" label="Spinning"></b-spinner>
@@ -89,13 +100,15 @@
             </b-col>
      </b-row>
         </b-container>
+        
   </div>
+  
 </template>
 
 <script>
     import axios from 'axios'
     import ProductCard from '../components/ProductCard.vue';
-    import { isNullOrUndefined } from 'util';
+    import { isNullOrUndefined, callbackify } from 'util';
 
   export default {
       components :{
@@ -123,7 +136,9 @@
           categorie :null,
           img : ''
         },
-         user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user)
+         user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
+         dismissSecs: 5,
+        dismissCountDown: 0
       }
     },
     methods: {
@@ -158,13 +173,21 @@
           img : self.form.img
         }
           }).then(function (response) {
-            self.$router.push("/home");
+            self.showAlert();
+            self.$router.push('/home');
+
           })
           .catch(function (error) {
           console.log(error);
         })
         }
       },
+      countDownChanged(dismissCountDown) {
+        this.dismissCountDown = dismissCountDown
+      },
+      showAlert() {
+        this.dismissCountDown = this.dismissSecs
+      }
       
     },
     computed : {

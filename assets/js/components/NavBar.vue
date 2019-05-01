@@ -1,7 +1,7 @@
 <template>
    <div>
   <b-navbar toggleable="lg" type="dark" variant="info">
-    <router-link class="navbar-brand" to = "/home">Boomerang</router-link>
+    <router-link class="navbar-brand" to = "/home"><h1>Boomerang</h1></router-link>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -27,7 +27,7 @@
         <b-nav-item-dropdown v-else >
           <template  slot="button-content"><em>Espace Vente</em></template>  
           <b-dropdown-item to="/addProduct">Vendre un Produit</b-dropdown-item>
-          <b-dropdown-item href="#">Mes Ventes</b-dropdown-item>
+          <b-dropdown-item to="mesVentes">Mes Ventes</b-dropdown-item>
           <b-dropdown-item v-on:click="signOut()"> Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
         
