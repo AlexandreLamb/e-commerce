@@ -33,9 +33,8 @@
                 self = this;
                 axios({
             method: 'get',
-            url: '/get/vente/user/'+user.id,
+            url: '/get/vente/user/'+self.user.id,
           }).then(function (response) {
-            console.log(response.data);
             self.products = response.data; 
 
           })
@@ -45,6 +44,9 @@
             }
         },
         created: function(){
+            this.getProducts()
+        },
+        mounted: function(){
             this.getProducts()
         }
     }
