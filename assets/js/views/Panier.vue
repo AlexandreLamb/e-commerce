@@ -1,7 +1,16 @@
 <template>
     <div>
         <br>
-        <h1 align="center">Votre panier est vide, achetez vite ! {{totalPanier}}</h1>
+        <h1 v-if="totalPanier == 0" align="center">Votre panier est vide, achetez vite !</h1>
+        <h1 v-else align="center"> Total de payer : {{totalPanier}} €</h1>
+        <div class="text-center" v-show="onLoad"> 
+            <b-spinner label="Spinning"></b-spinner>
+            <b-spinner type="grow" label="Spinning"></b-spinner>
+            <b-spinner variant="primary" label="Spinning"></b-spinner>
+            <b-spinner variant="primary" type="grow" label="Spinning"></b-spinner>
+            <b-spinner variant="success" label="Spinning"></b-spinner>
+            <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
+        </div>
         <div class="container pt-3">
              
         <b-row>
@@ -23,12 +32,14 @@
     data() {
       return {
          user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
-         totalPanier : 0
+         totalPanier : 0,
+         onLoad :true,
       }
     },
     methods: {
       getPannier(){
         var self = this;
+        self.onLoad=true;
         axios({
         method: 'get',
         url: '/get/panier/user/'+self.user.id,
@@ -37,6 +48,7 @@
             console.log(response.data);
             self.user.panier = response.data
             self.totalPanier = self.countPrice(self.user.panier);
+            self.onLoad=false;
 
           })
           .catch(function (error) {
@@ -52,6 +64,7 @@
       },
       deleteProduct(product){
         var self = this;
+        self.onLoad=true;
         axios({
         method: 'post',
         url: '/delete/product/panier',
@@ -62,6 +75,8 @@
           }).then(function (response) {
             console.log(response.data)
             localStorage.user = JSON.stringify(response.data); 
+            self.getPannier();
+            self.onLoad=false;
 
           })
           .catch(function (error) {

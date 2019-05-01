@@ -9,6 +9,8 @@
     tag="article"
     style="max-width: 20rem;"
     class="mb-2"
+    img-height="100px"
+    img-width="300px"
   >
   
     <b-card-text> {{product.price}} Euros</b-card-text>

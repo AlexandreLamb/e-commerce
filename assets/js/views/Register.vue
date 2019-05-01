@@ -150,6 +150,7 @@
         v-model="selected"
         :options="options"
         name="radio-inline"
+        required  
       ></b-form-radio-group>
     </b-form-group>
 
@@ -167,8 +168,8 @@
       return {
         selected: 'first',
         options: [
-          { text: 'Acheteur', value: 'A' },
-          { text: 'Vendeur', value: 'V' },
+          { text: 'Acheteur', value: 'A'},
+          { text: 'Vendeur', value: 'V'},
         ],
         form: {
           username: '',

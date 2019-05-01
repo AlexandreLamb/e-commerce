@@ -9,6 +9,8 @@
     style="max-width: 20rem;"
     class="mb-2"
     v-show=" !onModify"
+    img-height="100px"
+    img-width="300px"
   >
     <b-card-text>
       {{product.description}}

@@ -9,6 +9,8 @@
     style="max-width: 20rem;"
     heigth="200"
     class="mb-2"
+    img-height="200px"
+    img-width="100px"
   >
     <b-card-text>
       {{product.description}}
