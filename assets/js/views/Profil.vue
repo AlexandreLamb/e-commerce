@@ -71,13 +71,33 @@
   </b-collapse>
 </div>
 
-<hr class="my-4">
-    <p>Addresse de livraison <b-button variant="primary" href="#">Modifier son adresse de livraison</b-button>
+ <hr class="my-4">
+    <p>Adresse de livraison<b-button class="ml-5" size="sm" v-on:click="toggleAdresse = !toggleAdresse" v-b-toggle.collapse-1 variant="primary">Modifier votre adresse de livraison</b-button>
     </p>
-    <h1>
-     {{user.adresse}}, {{user.ville}}
+    <h1 v-show="toggleAdresse">
+    {{user.adresse}}, {{user.ville}}
     </h1>
-     
+    <div>
+  <b-collapse id="collapse-1" class="mt-2">
+    <b-form inline>
+    <label class="sr-only" for="inline-form-input-name">Adresse de livraison</label>
+    <b-input
+      id="inline-form-input-name"
+      class="mb-2 mr-sm-2 mb-sm-0"
+      placeholder="Entrer votre adresse"
+      v-model="user.adresse"
+    ></b-input>
+    <b-input
+      id="inline-form-input-name"
+      class="mb-2 mr-sm-2 mb-sm-0"
+      placeholder="Entrer votre ville"
+      v-model="user.ville"
+    ></b-input>
+    <b-button v-on:click="update()" variant="primary">Save</b-button>
+  </b-form>
+  </b-collapse>
+</div>
+
   <hr class="my-4">
     <p>Date de naissance
     </p>
@@ -85,26 +105,73 @@
      {{user.date_naissance}}
     </h1>
 
-     <hr class="my-4">
-    <p>Mot de passe <b-button variant="primary" href="#">Modifier son mot de passe</b-button>
+
+ <hr class="my-4">
+    <p>Mot de passe<b-button class="ml-5" size="sm" v-on:click="toggleMdp = !toggleMdp" v-b-toggle.collapse-1 variant="primary">Modifier votre mot de passe</b-button>
     </p>
-    <h1> *************</h1>
+    <div>
+  <b-collapse id="collapse-1" class="mt-2">
+    <b-form inline>
+    <label class="sr-only" for="inline-form-input-name">Mot de passe</label>
+    <b-input
+      id="inline-form-input-name"
+      class="mb-2 mr-sm-2 mb-sm-0"
+      placeholder="Entrer votre nouveau mot de passe"
+      v-model="user.password"
+    ></b-input>
+    <b-input
+      id="inline-form-input-name"
+      class="mb-2 mr-sm-2 mb-sm-0"
+      placeholder="Entrez à nouveau votre mot de passe"
+      v-model="user.pain_password"
+    ></b-input>
+    <b-button v-on:click="update()" variant="primary">Save</b-button>
+  </b-form>
+  </b-collapse>
+</div>
+  
   </b-jumbotron>
 
   <b-jumbotron>
     <template slot="header">Ma carte bancaire</template>
-
     <template slot="lead">
-     Voici l'espace concernant votre carte bancaire. <b-button variant="primary" href="#">Modifier mes informations bancaires</b-button>
+      Voici l'espace concernant votre carte bancaire. 
+      <b-button class="ml-5" size="sm" v-on:click="toggleCarte = !toggleCarte" v-b-toggle.collapse-1 variant="primary">Modifier mes informations bancaires</b-button>
     </template>
+    <div>
+  <b-collapse id="collapse-1" class="mt-2">
+    <b-form inline>
+    <label class="sr-only" for="inline-form-input-name"></label>
+    <b-input
+      id="inline-form-input-name"
+      class="mb-2 mr-sm-2 mb-sm-0"
+      placeholder="Entrer votre numéro de carte bancaire"
+      v-model="numcarte"
+    ></b-input>
+    <b-input
+      id="inline-form-input-name"
+      class="mb-2 mr-sm-2 mb-sm-0"
+      placeholder="Entrer la date de validité de votre carte"
+      v-model="DateCarte"
+    ></b-input>
+        <b-input
+      id="inline-form-input-name"
+      class="mb-2 mr-sm-2 mb-sm-0"
+      type="num"
+      placeholder="Entrer le cryptogramme de votre carte bancaire"
+      v-model="CryptoCarte"
+    ></b-input>
+    <b-button v-on:click="update()" variant="primary">Save</b-button>
+  </b-form>
+  </b-collapse>
+</div>
 
     <hr class="my-4">
-    <div class="card bg-dark text-white"
-    >
+    <div class="card bg-dark text-white">
   <img class="card-img" src="../../pics/cartebleu2.png" alt="Card image">
   <div class="card-img-overlay">
-    <h2 class="card-text-1">1234 1234 1234 1234 </h2>
-        <h2 class="card-text-2">  12/34</h2>
+    <h2 class="card-text-1">{{numcarte}} </h2>
+        <h2 class="card-text-2"> {{DateCarte}}</h2>
     <h1 class="card-text-3"> Mr {{user.userlastname}}  {{user.username}} </h1>
   </div>
 </div>
@@ -124,6 +191,11 @@
           return {
               user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
               togglePhone : true,
+              toggleAdresse : true,
+              toggleCarte : true,
+              numcarte : 1234123412341234,
+              CryptoCarte : 180, 
+              DateCarte : 1212,
           }
         },
         methods: {
@@ -139,6 +211,7 @@ axios({
           email: self.user.email,
           telephone: self.user.telephone,
           password: self.user.password,
+          pain_password: self.user.pain_password,
           date_naissance : self.user.date_naissance,
           ville: self.user.ville,
           adresse: self.user.adresse,
@@ -147,6 +220,8 @@ axios({
            localStorage.user = JSON.stringify(response.data); 
               window.scrollTo({top : 0 , behavior: 'smooth'})
               self.togglePhone = true;
+              self.toggleAdresse = true;
+              self.toggleCarte = true;
           })
           .catch(function (error) {
           console.log(error);
@@ -173,5 +248,3 @@ axios({
     font-size: 2rem;
   }
 </style>
-
-

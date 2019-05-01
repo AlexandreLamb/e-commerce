@@ -40,12 +40,18 @@
           <b-nav-item-dropdown right >
           <!-- Using 'button-content' slot -->
           <template slot="button-content"><em>Login</em></template>
-          <b-form-input v-model="input.email" placeholder="Enter your email" type="text"></b-form-input>
-          <b-form-input v-model="input.password" placeholder="Enter your password" type="password"></b-form-input>
-          <b-button v-on:click="login()" >Login</b-button>
+          <b-form-input v-model="input.email" placeholder="Enter your email" type="text" 
+          style ="width: 16rem;margin: 0.5rem;font-weight: bold;"></b-form-input>
+          <b-form-input v-model="input.password" placeholder="Enter your password" type="password"
+          style ="width: 16rem;margin: 0.5rem;font-weight: bold;"></b-form-input>
+          
+          <div class="btn-group">
+          <b-button v-on:click="login()" class="btn btn-dark" style="margin-left:35%;" >Login</b-button>
           <router-link class="nav-item" tag="li" to="/register" active-class="active">
-                <b-button class="nav-link">Register</b-button>
-                    </router-link>
+                <b-button class="btn btn-warning" style="margin-left:50%;">Register</b-button>
+          </router-link>
+          </div>
+
          </b-nav-item-dropdown>
         </b-nav-form>
 
@@ -93,6 +99,7 @@ import { isNullOrUndefined } from 'util';
                if(response.data != false){
                 self.user = response.data;
                 self.connected = true;
+                console.log('test');
                 localStorage.user = JSON.stringify(self.user);
                }
           })

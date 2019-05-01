@@ -33,6 +33,27 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function findAllProduct()
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.name, p.description, p.price, p.categorie, p.nbrVentes, (p.vendeur), (p.acheteur), p.img')
+            ->orderBy('p.price', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    public function findAllProductByCat($value)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.name, p.description, p.price, p.categorie, p.nbrVentes, (p.vendeur), (p.acheteur), p.img')
+            ->andWhere('p.categorie = :val')
+            ->setParameter('val', $value)
+            ->orderBy('p.price', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    
     
 
     /*

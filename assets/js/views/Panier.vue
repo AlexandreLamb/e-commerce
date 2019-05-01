@@ -40,6 +40,7 @@
       getPannier(){
         var self = this;
         self.onLoad=true;
+         self.user = isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user)
         axios({
         method: 'get',
         url: '/get/panier/user/'+self.user.id,

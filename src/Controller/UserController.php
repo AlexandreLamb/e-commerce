@@ -162,7 +162,8 @@ class UserController extends AbstractController
             return new Response($jsonContent);
 
         }
-   /**
+
+    /**
      * @Route("/get/panier/user/{id}", methods={"GET"}, name="get_users")
      */
     public function getPanier(Int $id){
@@ -200,9 +201,9 @@ class UserController extends AbstractController
                 }
                 return new Response('false');
         }
-        /**
-     * @Route("/get/vente/user/{id}", methods={"GET"}, name="get_users_vente")
-     */
+   /**
+    * @Route("/get/vente/user/{id}", methods={"GET"}, name="get_users_vente")
+    */
     public function getVente(Int $id){
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getDoctrine()

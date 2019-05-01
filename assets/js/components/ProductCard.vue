@@ -12,6 +12,10 @@
     img-height="200px"
     img-width="100px"
   >
+  <div class="text-center" v-show="onLoad" >
+            <b-spinner label="Spinning"></b-spinner>
+            <b-spinner variant="primary" label="Spinning"></b-spinner>
+        </div>
     <b-card-text>
       {{product.description}}
     </b-card-text>
@@ -45,12 +49,14 @@
     data() {
       return {
          user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
-         visibility : false
+         visibility : false,
+         onLoad: null ,
       }
     },
     methods: {
       addPannier(){
         var self = this;
+        self.user = isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user);
         axios({
         method: 'post',
         url: '/add/product/panier',
@@ -69,7 +75,24 @@
         var self = this;
         self.$emit('cliked' , self.product);
                 self.visibility = !self.visibility
-      }
+      },
+      getImg(){
+        var self = this;
+        self.onLoad = true;
+        axios({
+        method: 'get',
+        url: '/get/img/'+self.product.id,
+          }).then(function (response) {
+            self.product.img =  response.data.img;
+            self.onLoad = false;
+          })
+          .catch(function (error) {
+          console.log(error);
+        })
+      },
+    },
+    created : function() {
+      this.getImg();
     }
   }
 </script>
