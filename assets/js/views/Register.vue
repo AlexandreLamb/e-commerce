@@ -46,7 +46,7 @@
           placeholder="Entrer une adresse email"
           :state="validationEmail"
         ></b-form-input>
-        <b-form-invalid-feedback :state="isEmailUse">
+        <b-form-invalid-feedback :state="isEmailUse" >
                 E mail deja utilisé ! 
         </b-form-invalid-feedback>
       <b-form-valid-feedback :state="isEmailUse">
@@ -59,6 +59,7 @@
         label="Date de naissance"
         label-for="input-4"
         description=""
+        
       >
         <b-form-input
           id="input-4"
@@ -73,6 +74,7 @@
         label="Ville:"
         label-for="input-5"
         description=""
+        
       >
         <b-form-input
           id="input-5"
@@ -88,6 +90,7 @@
         label="Adresse de livraison:"
         label-for="input-6"
         description=""
+        
       >
         <b-form-input
           id="input-6"
@@ -103,6 +106,7 @@
         label="Numéro de téléphone:"
         label-for="input-7"
         description=""
+        
       >
         <b-form-input
           id="input-7"
@@ -127,9 +131,9 @@
         </b-form-invalid-feedback>
       <b-form-valid-feedback :state="validationRegex">
         Pas mal
-      </b-form-valid-feedback>
-        
+      </b-form-valid-feedback> 
       </b-form-group>
+     
       <b-form-group id="input-group-9" label=" Confirm Password :" label-for="input-9">
         <b-form-input
           id="input-9"
@@ -144,18 +148,64 @@
       <b-form-valid-feedback :state="validationSamePassword">
         C'est en effet le meme
       </b-form-valid-feedback>
-
-     <b-form-group label="Quel sera votre utilisation de notre site ? ">
-      <b-form-radio-group
-        v-model="selected"
-        :options="options"
-        name="radio-inline"
-      ></b-form-radio-group>
-    </b-form-group>
-
       </b-form-group>
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
+
+    <b-form-group label="Carte de crédit">
+      <div>
+  
+      <b-input-group size="sm" prepend="Numéro de la carte">
+        <b-form-input
+        id="input-10"
+          v-model="form.numero"
+          type="number"
+          required
+          ></b-form-input>
+           <b-form-invalid-feedback :state="validationNumeroCarteBleu">
+       Votre numéro de carte bancaire ne contient pas le bon nombre de chiffre
+      </b-form-invalid-feedback>
+      </b-input-group>
+      
+      
+        <b-form inline >
+          <b-input-group size="sm" prepend="Date de validée">
+            <b-form-input
+            id="input-11"
+              v-model="form.date_validite"
+              type="Date"
+              required
+              ></b-form-input>
+          </b-input-group>
+
+          <b-input-group size="sm" prepend="Cryptogramme">
+            <b-form-input
+            id="input-12"
+              v-model="form.crypto"
+              type="number"
+              required
+              ></b-form-input>
+          </b-input-group>
+        </b-form>
+      
+
+    </div>
+    </b-form-group>
+     
+     <b-form-group style="margin-left: 35%;" label="Quel sera votre utilisation de notre site ? ">
+          <b-form-radio-group
+            v-model="selected"
+            :options="options"
+            buttons
+            button-variant="outline-primary"
+            size="lg"
+            name="radio-btn-outline"
+            style="margin-left: 5%;"
+          ></b-form-radio-group>
+    </b-form-group>
+      </b-form-group>  
+
+      <b-button type="submit" variant="primary" size="lg" style="margin-left:40%;">Submit</b-button>
+      <b-button type="reset" variant="danger" size="lg">Reset</b-button>
+    
     </b-form>
   </div>
 </template>
@@ -179,7 +229,10 @@
           confirmPassword : '',
           date_naissance : '',
           ville : '',
-          adresse : ''
+          adresse : '',
+          numero : '',
+          crypto : '',
+          date_validite :''
         },
         show: true,
         isSamePassword: false,
@@ -229,6 +282,9 @@
         this.form.date_naissance=''
         this.form.ville=''
         this.form.adresse=''
+        this.form.numero=''
+        this.form.crypto='',
+        this.form.date_validite=''
         this.show = false
         this.$nextTick(() => {
           this.show = true
@@ -247,6 +303,9 @@
         url: '/check/user/mail',
         data: {
           email: self.form.email,
+        }, 
+        validationNumeroCarteBleu(){
+          return (this.form.numCarte == 16)
         }
           }).then(function (response) {
              self.isUse = response.data;
