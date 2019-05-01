@@ -12,6 +12,8 @@
     import Carousel from '../components/Carousel.vue';
     import ProductCardV from '../components/ProductCardV.vue';
     import axios from 'axios';
+    import { isNullOrUndefined } from 'util';
+
 
     export default {
         name: 'home',
@@ -20,7 +22,9 @@
         },
          data () {
           return {
-            products : []
+            products : [],
+            user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
+
           }
           
         },
@@ -29,7 +33,7 @@
                 self = this;
                 axios({
             method: 'get',
-            url: '/get/products',
+            url: '/get/vente/user/'+user.id,
           }).then(function (response) {
             console.log(response.data);
             self.products = response.data; 

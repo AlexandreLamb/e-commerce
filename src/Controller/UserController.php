@@ -200,6 +200,18 @@ class UserController extends AbstractController
                 }
                 return new Response('false');
         }
+        /**
+     * @Route("/get/vente/user/{id}", methods={"GET"}, name="get_users_vente")
+     */
+    public function getVente(Int $id){
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findOneBy(['id' => $id]);
+        
+        $jsonContent = $this->serializer->serialize($user->getProducts(), 'json');
+        return new Response($jsonContent);
+    }
     
 }
  

@@ -10,7 +10,6 @@
     >
       Nouveau produit ajouté, vous allez être redirigé à la page d'acceuil dans {{ dismissCountDown }} secondes
     </b-alert>
-      <b-container>
     <div class="text-center" v-show="!onLoad">
   <b-spinner label="Spinning"></b-spinner>
   <b-spinner type="grow" label="Spinning"></b-spinner>
@@ -108,7 +107,7 @@
 <script>
     import axios from 'axios'
     import ProductCard from '../components/ProductCard.vue';
-    import { isNullOrUndefined, callbackify } from 'util';
+    import { isNullOrUndefined } from 'util';
 
   export default {
       components :{
@@ -144,7 +143,6 @@
     methods: {
          onFileChange(e) {
            var self = this;
-             console.log('test');
       const file = e.target.files[0];
       var reader = new FileReader();
       reader.readAsDataURL(file);
