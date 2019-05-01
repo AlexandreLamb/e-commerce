@@ -150,6 +150,7 @@
       </b-form-valid-feedback>
       </b-form-group>
 
+
     <b-form-group label="Carte de crédit">
       <div>
   
@@ -201,7 +202,6 @@
             style="margin-left: 5%;"
           ></b-form-radio-group>
     </b-form-group>
-      </b-form-group>  
 
       <b-button type="submit" variant="primary" size="lg" style="margin-left:40%;">Submit</b-button>
       <b-button type="reset" variant="danger" size="lg">Reset</b-button>
@@ -217,8 +217,8 @@
       return {
         selected: 'first',
         options: [
-          { text: 'Acheteur', value: 'A' },
-          { text: 'Vendeur', value: 'V' },
+          { text: 'Acheteur', value: 'A'},
+          { text: 'Vendeur', value: 'V'},
         ],
         form: {
           username: '',

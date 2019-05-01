@@ -9,6 +9,8 @@
     style="max-width: 20rem;"
     heigth="200"
     class="mb-2"
+    img-height="200px"
+    img-width="100px"
   >
   <div class="text-center" v-show="onLoad" >
             <b-spinner label="Spinning"></b-spinner>

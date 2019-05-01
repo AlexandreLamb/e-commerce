@@ -1,6 +1,14 @@
 <template>
     <div> 
-        <h1 align="center">Nos livres</h1>
+        <h1 align="center">Nos vêtements</h1>
+        <div class="text-center" v-show="onLoad">
+            <b-spinner label="Spinning"></b-spinner>
+            <b-spinner type="grow" label="Spinning"></b-spinner>
+            <b-spinner variant="primary" label="Spinning"></b-spinner>
+            <b-spinner variant="primary" type="grow" label="Spinning"></b-spinner>
+            <b-spinner variant="success" label="Spinning"></b-spinner>
+            <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
+        </div>
         <div>
             <b-collapse id="collapse-1" v-model="showCollapse" class="mt-2">
             <b-card>
@@ -31,18 +39,21 @@
          data () {
           return {
             vetements : [],
-            product : {}
+            product : {},
+            onLoad :true,
           }
           
         },
         methods :{
             getVetements : function(){
                 var self = this;
+                self.onLoad=true
                 axios({
                     method: 'get',
                     url: '/get/products/vetements',
                 }).then(function (response) {
                 self.vetements = response.data;
+                self.onLoad=false;
                 })
                 .catch(function (error) {
                     console.log(error);
