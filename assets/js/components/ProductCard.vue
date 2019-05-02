@@ -1,17 +1,7 @@
 <template>
     <div>
-  <b-card
-    :title="product.name"
-    :img-src="product.img"
-    img-alt="No Image"
-    img-top
-    tag="article"
-    style="max-width: 20rem;"
-    heigth="200"
-    class="mb-2"
-    img-height="200px"
-    img-width="100px"
-  >
+  <carousel :tabImg="[product.img]"></carousel>
+
   <div class="text-center" v-show="onLoad" >
             <b-spinner label="Spinning"></b-spinner>
             <b-spinner variant="primary" label="Spinning"></b-spinner>
@@ -31,7 +21,12 @@
 <script>
       import { isNullOrUndefined } from 'util';
       import axios from 'axios';
+       import Carousel from '../components/CarouselProduit.vue';
   export default {
+    components : {
+    carousel : Carousel,
+
+    },
     props: {
       product : {
         type : Object,
