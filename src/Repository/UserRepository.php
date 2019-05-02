@@ -19,22 +19,37 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return User[] Returns an array of User objects
+      */
+    
+     public function findAllUsers()
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.email, p.username, p.userlastname, p.adresse, p.ville,
+             p.telephone, p.dateNaissance, cb.type, p.pays, p.codePostale,
+             cb.numero, cb.dateValidite')
+            ->leftJoin('p.cb', 'cb')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
+    public function findOneUser($email)
+    {
+        return $this->createQueryBuilder('p')
+        ->select('p.id, p.email, p.username, p.userlastname, p.adresse, p.ville,
+        p.telephone, p.dateNaissance, cb.type, p.pays, p.codePostale,
+        cb.numero, cb.dateValidite')
+            ->leftJoin('p.cb', 'cb')
+            ->andWhere('p.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getResult()
+
+        ;
+    }
+    
 
     /*
     public function findOneBySomeField($value): ?User

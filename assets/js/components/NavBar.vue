@@ -18,7 +18,8 @@
         <router-link class="nav-item" tag="li" to="/test" active-class="active">
                         <a class="nav-link">Ventes flash</a>
                     </router-link>
-        <router-link class="nav-item" tag="li" to="/panier" active-class="active">
+        <router-link v-if="connected" class="nav-item" tag="li" to="/panier" active-class="active">
+                          <span class="glyphicon glyphicon-shopping-cart"></span>
                         <a class="nav-link">Panier</a>
                     </router-link>
         <router-link v-if="!connected" class="nav-item" tag="li" to="/register" active-class="active">
@@ -39,7 +40,7 @@
         <b-nav-form v-if=" !connected ">
           <b-nav-item-dropdown right >
           <!-- Using 'button-content' slot -->
-          <template slot="button-content"><em>Login</em></template>
+          <template slot="button-content"><em>Login/Inscription</em></template>
           <b-form-input v-model="input.email" placeholder="Enter your email" type="text" 
           style ="width: 16rem;margin: 0.5rem;font-weight: bold;"></b-form-input>
           <b-form-input v-model="input.password" placeholder="Enter your password" type="password"
@@ -97,9 +98,9 @@ import { isNullOrUndefined } from 'util';
         }
           }).then(function (response) {
                if(response.data != false){
-                self.user = response.data;
+                self.user = response.data[0];
                 self.connected = true;
-                console.log('test');
+                console.log(response.data);
                 localStorage.user = JSON.stringify(self.user);
                }
           })

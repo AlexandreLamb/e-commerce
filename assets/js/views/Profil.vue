@@ -72,13 +72,13 @@
 </div>
 
  <hr class="my-4">
-    <p>Adresse de livraison<b-button class="ml-5" size="sm" v-on:click="toggleAdresse = !toggleAdresse" v-b-toggle.collapse-1 variant="primary">Modifier votre adresse de livraison</b-button>
+    <p>Adresse de livraison<b-button class="ml-5" size="sm" v-on:click="toggleAdresse = !toggleAdresse" v-b-toggle.collapse-2 variant="primary">Modifier votre adresse de livraison</b-button>
     </p>
     <h1 v-show="toggleAdresse">
     {{user.adresse}}, {{user.ville}}
     </h1>
     <div>
-  <b-collapse id="collapse-1" class="mt-2">
+  <b-collapse id="collapse-2" class="mt-2">
     <b-form inline>
     <label class="sr-only" for="inline-form-input-name">Adresse de livraison</label>
     <b-input
@@ -107,10 +107,10 @@
 
 
  <hr class="my-4">
-    <p>Mot de passe<b-button class="ml-5" size="sm" v-on:click="toggleMdp = !toggleMdp" v-b-toggle.collapse-1 variant="primary">Modifier votre mot de passe</b-button>
+    <p>Mot de passe<b-button class="ml-5" size="sm" v-on:click="toggleMdp = !toggleMdp" v-b-toggle.collapse-3 variant="primary">Modifier votre mot de passe</b-button>
     </p>
     <div>
-  <b-collapse id="collapse-1" class="mt-2">
+  <b-collapse id="collapse-3" class="mt-2">
     <b-form inline>
     <label class="sr-only" for="inline-form-input-name">Mot de passe</label>
     <b-input
@@ -136,10 +136,10 @@
     <template slot="header">Ma carte bancaire</template>
     <template slot="lead">
       Voici l'espace concernant votre carte bancaire. 
-      <b-button class="ml-5" size="sm" v-on:click="toggleCarte = !toggleCarte" v-b-toggle.collapse-1 variant="primary">Modifier mes informations bancaires</b-button>
+      <b-button class="ml-5" size="sm" v-on:click="toggleCarte = !toggleCarte" v-b-toggle.collapse-4 variant="primary">Modifier mes informations bancaires</b-button>
     </template>
     <div>
-  <b-collapse id="collapse-1" class="mt-2">
+  <b-collapse id="collapse-4" class="mt-2">
     <b-form inline>
     <label class="sr-only" for="inline-form-input-name"></label>
     <b-input

@@ -36,6 +36,11 @@ class CarteBleu
      */
     private $dateValidite;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $type;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +90,18 @@ class CarteBleu
     public function setDateValidite(string $dateValidite): self
     {
         $this->dateValidite = $dateValidite;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

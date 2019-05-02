@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Product;
+use App\Entity\CarteBleu;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,6 +43,11 @@ class UserController extends AbstractController
     public function register(Request $request, UserPasswordEncoderInterface $encoder)
         {
             $data = json_decode($request->getContent(),true);
+            
+            
+
+
+
             $user = new User();
             $password = password_hash($data['password'],PASSWORD_BCRYPT); 
                 $user-> setUserlastname($data['userlastname']);
@@ -53,10 +59,21 @@ class UserController extends AbstractController
                 $user-> setAdresse($data['adresse']);
                 $user-> setVille($data['ville']);
                 $user-> setDateNaissance(NULL);
+                $user->setPays($data['pays']);
+                $user->setCodePostale($data['codePostale']);
 
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
+
+            $cb = new CarteBleu();
+            $cb->setNumero($data['numero']);
+            $cb->setType($data['typeCb']);
+            $cb->setDateValidite($data['dateValidite']);
+            $cb->setCrypto($data['crypto']);
+            $cb->setUser($user);
+            $entityManager->persist($cb);
+
             $entityManager->flush();
             return new Response('new user '. $user->getUserName());
     }
@@ -89,6 +106,9 @@ class UserController extends AbstractController
                 return new Response('false');
             } else {
                 if (  password_verify($data['password'],$user->getPassword() ) ) {
+                    $user = $this->getDoctrine()
+                     ->getRepository(User::class)
+                    ->findOneUser($data['email']);
                     $jsonContent = $this->serializer->serialize($user, 'json');
                     return new Response($jsonContent);
                 }   
@@ -129,7 +149,7 @@ class UserController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $users = $this->getDoctrine()
         ->getRepository(User::class)
-        ->findAll();
+        ->findAllUsers();
         $jsonContent = $this->serializer->serialize($users, 'json');
         return new Response($jsonContent);
     }
@@ -164,15 +184,18 @@ class UserController extends AbstractController
         }
 
     /**
-     * @Route("/get/panier/user/{id}", methods={"GET"}, name="get_users")
+     * @Route("/get/panier/user/{id}", methods={"GET"}, name="get_users_panier")
      */
     public function getPanier(Int $id){
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getDoctrine()
                 ->getRepository(User::class)
                 ->findOneBy(['id' => $id]);
+        $panier= $this->getDoctrine()
+        ->getRepository(Product::class)
+        ->findPanier($id);
         
-        $jsonContent = $this->serializer->serialize($user->getPanier(), 'json');
+        $jsonContent = $this->serializer->serialize($panier, 'json');
         return new Response($jsonContent);
     }
         /**

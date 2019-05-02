@@ -84,6 +84,34 @@
           placeholder="Entrez votre ville"
         ></b-form-input>
       </b-form-group>
+      <b-form-group
+        id="input-group-12"
+        label="Code Postale"
+        label-for="input-12"
+        description=""
+        
+      >
+        <b-form-input
+          id="input-12"
+          v-model="form.codePostale"
+          type="number"
+          required
+        ></b-form-input>
+      </b-form-group>
+      <b-form-group
+        id="input-group-13"
+        label="Pays :"
+        label-for="input-13"
+        description=""
+        
+      >
+        <b-form-select
+          id="input-3"
+          v-model="form.pays"
+          :options="pays"
+          required
+        ></b-form-select>
+      </b-form-group>
 
       <b-form-group
         id="input-group-6"
@@ -153,7 +181,16 @@
 
     <b-form-group label="Carte de crédit">
       <div>
-  
+  <b-input-group           
+  prepend="Type de Carte Bancaire"
+>
+        <b-form-select
+          id="input-14"
+          v-model="form.typeCb"
+          :options="type"
+          required
+        ></b-form-select>
+  </b-input-group>
       <b-input-group size="sm" prepend="Numéro de la carte">
         <b-form-input
         id="input-10"
@@ -216,6 +253,8 @@
     data() {
       return {
         selected: 'first',
+        type : ['MasterCard','Visa'],
+        pays: ['France Metropole', 'France Dom Tom', 'Belgique', 'Suisse'],
         options: [
           { text: 'Acheteur', value: 'A'},
           { text: 'Vendeur', value: 'V'},
@@ -232,7 +271,10 @@
           adresse : '',
           numero : '',
           crypto : '',
-          date_validite :''
+          date_validite :'',
+          codePostale: '',
+          typeCb : '',
+          pays: ''
         },
         show: true,
         isSamePassword: false,
@@ -261,6 +303,13 @@
           date_naissance : self.form.date_naissance,
           ville: self.form.ville,
           adresse: self.form.adresse,
+          typeCb : self.form.typeCb,
+          codePostale : self.form.codePostale,
+          pays : self.form.pays,
+          dateValidite : self.form.date_validite,
+          numero  : self.form.numero,
+          crypto : self.form.crypto,
+
         }
           }).then(function (response) {
            self.$router.push('/home'); 

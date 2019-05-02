@@ -53,6 +53,18 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function findPanier($id)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.name, p.description, p.price, p.categorie, p.nbrVentes, acheteur.email, p.img')
+            ->leftJoin('p.acheteur', 'acheteur')
+            ->andWhere('acheteur.id = :id')
+            ->setParameter('id', $id)
+            ->orderBy('p.price', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     
     
 

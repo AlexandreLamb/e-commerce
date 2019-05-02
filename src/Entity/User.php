@@ -78,6 +78,16 @@ class User
      */
     private $cb;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $pays;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $codePostale;
+
 
     public function __construct()
     {
@@ -274,6 +284,30 @@ class User
         if ($newUser !== $cb->getUser()) {
             $cb->setUser($newUser);
         }
+
+        return $this;
+    }
+
+    public function getPays(): ?string
+    {
+        return $this->pays;
+    }
+
+    public function setPays(string $pays): self
+    {
+        $this->pays = $pays;
+
+        return $this;
+    }
+
+    public function getCodePostale(): ?int
+    {
+        return $this->codePostale;
+    }
+
+    public function setCodePostale(int $codePostale): self
+    {
+        $this->codePostale = $codePostale;
 
         return $this;
     }
