@@ -203,6 +203,7 @@ class UserController extends AbstractController
          */
         public function deletePanier (Request $request) {
             $data = json_decode($request->getContent(),true);
+            $entityManager = $this->getDoctrine()->getManager();
 
             $product = $this->getDoctrine()
                 ->getRepository(Product::class)
@@ -216,10 +217,42 @@ class UserController extends AbstractController
                     return new Response('false');
                 } else {
                    $user->removePanier($product);
-                   $entityManager = $this->getDoctrine()->getManager();
                    $entityManager->persist($user);
                    $entityManager->flush();
-                   $jsonContent = $this->serializer->serialize($user, 'json');
+                   $panier = $this->getDoctrine()->getRepository(Product::class)
+                   ->findPanier($data['userId']);
+
+                   $jsonContent = $this->serializer->serialize($panier, 'json');
+                   return new Response($jsonContent);                
+                }
+                return new Response('false');
+        }
+
+        /**
+         * @Route("/delete/product/ventes", methods={"POST"}, name="delete_product_ventes")
+         */
+        public function deleteVentes (Request $request) {
+            $data = json_decode($request->getContent(),true);
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $product = $this->getDoctrine()
+                ->getRepository(Product::class)
+                ->findOneBy(['id' => $data['productId']]);
+
+            $user = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findOneBy(['id' => $data['userId']]);
+            
+                if (!$product && !$user){
+                    return new Response('false');
+                } else {
+                   $user->removeProduct($product);
+                   $entityManager->persist($user);
+                   $entityManager->flush();
+                   $ventes = $this->getDoctrine()->getRepository(Product::class)
+                   ->findVendeur($data['userId']);
+
+                   $jsonContent = $this->serializer->serialize($ventes, 'json');
                    return new Response($jsonContent);                
                 }
                 return new Response('false');
@@ -232,8 +265,11 @@ class UserController extends AbstractController
         $user = $this->getDoctrine()
                 ->getRepository(User::class)
                 ->findOneBy(['id' => $id]);
+        $vendeur= $this->getDoctrine()
+        ->getRepository(Product::class)
+        ->findVendeur($id);
         
-        $jsonContent = $this->serializer->serialize($user->getProducts(), 'json');
+        $jsonContent = $this->serializer->serialize($vendeur, 'json');
         return new Response($jsonContent);
     }
     

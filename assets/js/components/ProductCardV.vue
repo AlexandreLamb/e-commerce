@@ -19,7 +19,7 @@
     <b-button-group>
       <b-button href="#" variant="warning">Voir le produit</b-button>
       <b-button v-on:click="onModify = !onModify" variant="info">Modifier le produit</b-button>
-      <b-button href="#" variant="success">Supprimer le produit</b-button>
+      <b-button v-on:click="deleteProduct" variant="success">Supprimer le produit</b-button>
     </b-button-group>
   </b-card>
   <form-add-product v-show="onModify"></form-add-product>
@@ -51,7 +51,10 @@
       }
     },
     methods: {
-     
+     deleteProduct(){
+          var self = this;
+        self.$emit('cliked' , self.product);
+      },
     }
   }
 </script>

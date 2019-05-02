@@ -65,6 +65,18 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function findVendeur($id)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.name, p.description, p.price, p.categorie, p.nbrVentes, vendeur.email, p.img')
+            ->leftJoin('p.vendeur', 'vendeur')
+            ->andWhere('vendeur.id = :id')
+            ->setParameter('id', $id)
+            ->orderBy('p.price', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     
     
 

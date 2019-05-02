@@ -75,8 +75,8 @@
         }
           }).then(function (response) {
             console.log(response.data)
-            localStorage.user = JSON.stringify(response.data); 
-            self.getPannier();
+            self.user.panier = response.data;
+            self.totalPanier = self.countPrice(self.user.panier); 
             self.onLoad=false;
 
           })

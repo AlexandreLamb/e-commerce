@@ -49,9 +49,7 @@
     methods: {
       deleteProduct(){
           var self = this;
-          console.log('zfe')
         self.$emit('cliked' , self.product);
-        //this.isDelete = ! this.isDelete;
       },
       toggleVisibility(){
         var self = this;
