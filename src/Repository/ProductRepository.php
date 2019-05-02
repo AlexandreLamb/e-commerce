@@ -36,7 +36,7 @@ class ProductRepository extends ServiceEntityRepository
     public function findAllProduct()
     {
         return $this->createQueryBuilder('p')
-            ->select('p.id, p.name, p.description, p.price, p.categorie, p.nbrVentes, (p.vendeur), (p.acheteur), p.img')
+            ->select('p.id, p.name, p.description, p.quantite, p.price, p.categorie, p.nbrVentes, (p.vendeur), (p.acheteur), p.img')
             ->orderBy('p.price', 'ASC')
             ->getQuery()
             ->getResult()
@@ -45,7 +45,7 @@ class ProductRepository extends ServiceEntityRepository
     public function findAllProductByCat($value)
     {
         return $this->createQueryBuilder('p')
-            ->select('p.id, p.name, p.description, p.price, p.categorie, p.nbrVentes, (p.vendeur), (p.acheteur), p.img')
+            ->select('p.id, p.name, p.description, p.quantite, p.price, p.categorie, p.nbrVentes, (p.vendeur), (p.acheteur), p.img')
             ->andWhere('p.categorie = :val')
             ->setParameter('val', $value)
             ->orderBy('p.price', 'ASC')
@@ -56,7 +56,7 @@ class ProductRepository extends ServiceEntityRepository
     public function findPanier($id)
     {
         return $this->createQueryBuilder('p')
-            ->select('p.id, p.name, p.description, p.price, p.categorie, p.nbrVentes, acheteur.email, p.img')
+            ->select('p.id, p.name, p.description, p.price, p.quantite, p.categorie, p.nbrVentes, acheteur.email, p.img')
             ->leftJoin('p.acheteur', 'acheteur')
             ->andWhere('acheteur.id = :id')
             ->setParameter('id', $id)
@@ -68,7 +68,7 @@ class ProductRepository extends ServiceEntityRepository
     public function findVendeur($id)
     {
         return $this->createQueryBuilder('p')
-            ->select('p.id, p.name, p.description, p.price, p.categorie, p.nbrVentes, vendeur.email, p.img')
+            ->select('p.id, p.name, p.description, p.price,p.quantite, p.categorie, p.nbrVentes, vendeur.email, p.img')
             ->leftJoin('p.vendeur', 'vendeur')
             ->andWhere('vendeur.id = :id')
             ->setParameter('id', $id)

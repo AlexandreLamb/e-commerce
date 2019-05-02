@@ -60,7 +60,7 @@ class ProductController extends AbstractController
         $product->setNbrVentes(0);
         $product->setVendeur($user);
         $product->addAttachment($attachments);
-        //$product->setImg($data['img']);
+        $product->setQuantite($data['quantite']);
         
 
 

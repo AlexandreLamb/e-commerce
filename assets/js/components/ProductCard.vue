@@ -20,9 +20,11 @@
       {{product.description}}
     </b-card-text>
     <b-card-text> {{product.price}} Euros</b-card-text>
+    <b-card-text> Nombre restant : {{product.quantite}}</b-card-text>
+
     <b-button-group>
       <b-button v-on:click="toggleVisibility()" variant="warning">Voir le produit</b-button>
-      <b-button v-on:click="addPannier()" variant="success">Ajouter au Panier</b-button>
+      <b-button v-show="user" v-on:click="addPannier()" variant="success">Ajouter au Panier</b-button>
     </b-button-group>
     
   </b-card>

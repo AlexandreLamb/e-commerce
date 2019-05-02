@@ -64,6 +64,11 @@ class Product
      */
     private $attachments;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $quantite;
+
     public function __construct()
     {
         $this->attachments = new ArrayCollection();
@@ -199,6 +204,18 @@ class Product
                 $attachment->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuantite(): ?int
+    {
+        return $this->quantite;
+    }
+
+    public function setQuantite(int $quantite): self
+    {
+        $this->quantite = $quantite;
 
         return $this;
     }

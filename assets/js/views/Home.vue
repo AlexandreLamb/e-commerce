@@ -12,8 +12,19 @@
             <b-spinner variant="success" label="Spinning"></b-spinner>
             <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
         </div>
+        <div>
+            <b-collapse id="collapse-1" v-model="showCollapse" class="mt-2">
+            <b-card>
+                <button type="button" v-on:click="showCollapse= !showCollapse" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                </button>
+                <p class="card-text">{{product.name}}</p>
+                 <b-card>{{product.description}}</b-card>
+            </b-card>
+            </b-collapse>
+        </div>
         <b-row>
-            <product-card v-for="product in products" :key="product.id" :product="product" class="col-sm-6 col-md-4 col-lg-3"></product-card>
+            <product-card @cliked="toggleVisibility" v-for="product in products" :key="product.id" :product="product" class="col-sm-6 col-md-4 col-lg-3"></product-card>
         </b-row>
     </div>
     
@@ -32,9 +43,12 @@
         },
          data () {
           return {
+              product: {},
             products : [],
             onLoad : true,
             searchName: "",
+            showCollapse : false,
+
           }
           
         },
@@ -76,6 +90,12 @@
             } else{
                 self.getProducts();
             }
+            },
+            toggleVisibility(value){
+                console.log(value);
+                this.product = value;
+                this.showCollapse = true;
+                window.scrollTo({ top: 500, behavior: 'smooth' })                 
             }
         },
         created: function(){

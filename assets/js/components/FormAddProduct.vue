@@ -73,6 +73,14 @@
       <b-form-group id="input-group-5" label="Categorie :" label-for="input-5">
             <b-form-select v-model="form.categorie" :options="options"></b-form-select>
       </b-form-group>
+      <b-form-group id="input-group-6" label="Quantite :" label-for="input-6">
+            <b-form-input
+          id="input-6"
+          v-model="form.quantite"
+          type="number"
+          required
+        ></b-form-input>
+      </b-form-group>
       <b-button type="submit" variant="primary">Submit</b-button>
     </b-form>
     </b-col>
@@ -131,7 +139,8 @@
           name: '',
           file:null,
           categorie :null,
-          img : ''
+          img : '',
+          quantite : 0,
         },
          user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
          dismissSecs: 5,
@@ -166,7 +175,8 @@
           file: self.form.file.name,
           categorie : self.form.categorie,
           userId : self.user.id,
-          img : self.form.img
+          img : self.form.img,
+          quantite : self.form.quantite
         }
           }).then(function (response) {
             self.showAlert();
