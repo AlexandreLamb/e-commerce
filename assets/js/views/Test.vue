@@ -16,7 +16,6 @@
 <script>
     import ProductCard from '../components/ProductCard.vue';
     export default {
-        name: 'home',
         components :{
         productCard : ProductCard,
         },

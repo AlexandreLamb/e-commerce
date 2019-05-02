@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Product;
 use App\Entity\CarteBleu;
+use App\entity\Panier;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -132,12 +133,22 @@ class UserController extends AbstractController
                 if (!$product && !$user){
                     return new Response('false');
                 } else {
-                   $user->addPanier($product);
+                    if($product->getQuantite() >= 1){
+                   
+                        $panier = new Panier();
+                        $panier->setUser($user);
+                        $panier->setProduct($product);
+                        $panier->setQuantiteProduct($data['quantite']);
                    $entityManager = $this->getDoctrine()->getManager();
-                   $entityManager->persist($user);
+
+                   $entityManager->persist($panier);
+
                    $entityManager->flush();
-                   $jsonContent = $this->serializer->serialize($user, 'json');
-                   return new Response($jsonContent);                
+                   return new Response('true');    
+                    }
+                    else {
+                        return new Response('error');
+                     }           
                 }
                 return new Response('false');
         }
@@ -192,8 +203,8 @@ class UserController extends AbstractController
                 ->getRepository(User::class)
                 ->findOneBy(['id' => $id]);
         $panier= $this->getDoctrine()
-        ->getRepository(Product::class)
-        ->findPanier($id);
+        ->getRepository(Panier::class)
+        ->findProductInPanier($id);
         
         $jsonContent = $this->serializer->serialize($panier, 'json');
         return new Response($jsonContent);
@@ -216,7 +227,7 @@ class UserController extends AbstractController
                 if (!$product && !$user){
                     return new Response('false');
                 } else {
-                   $user->removePanier($product);
+                   $user->removeProductsPanier($product);
                    $entityManager->persist($user);
                    $entityManager->flush();
                    $panier = $this->getDoctrine()->getRepository(Product::class)
@@ -272,6 +283,25 @@ class UserController extends AbstractController
         $jsonContent = $this->serializer->serialize($vendeur, 'json');
         return new Response($jsonContent);
     }
-    
+
+    /**
+     * @Route("/post/payer/user/{id}", methods={"GET"}, name="payer_user")
+     */
+    public function payer(Int $id){
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findOneBy(['id' => $id]);
+        $panier = $user->getProductsPanier();
+        foreach ($panier as $key => $product) {
+            $product->setQuantite($product->getQuantite()-1);
+            $product->removeUser($user);
+            
+            $entityManager->persist($product);
+            $entityManager->flush();
+            
+        }
+        return new Response('o');
+    }
 }
  

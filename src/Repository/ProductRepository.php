@@ -37,6 +37,7 @@ class ProductRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->select('p.id, p.name, p.description, p.quantite, p.price, p.categorie, p.nbrVentes, (p.vendeur), (p.acheteur), p.img')
+            ->andWhere('p.quantite > 0')
             ->orderBy('p.price', 'ASC')
             ->getQuery()
             ->getResult()
@@ -47,6 +48,7 @@ class ProductRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->select('p.id, p.name, p.description, p.quantite, p.price, p.categorie, p.nbrVentes, (p.vendeur), (p.acheteur), p.img')
             ->andWhere('p.categorie = :val')
+            ->andWhere('p.quantite > 0')
             ->setParameter('val', $value)
             ->orderBy('p.price', 'ASC')
             ->getQuery()
@@ -56,9 +58,9 @@ class ProductRepository extends ServiceEntityRepository
     public function findPanier($id)
     {
         return $this->createQueryBuilder('p')
-            ->select('p.id, p.name, p.description, p.price, p.quantite, p.categorie, p.nbrVentes, acheteur.email, p.img')
-            ->leftJoin('p.acheteur', 'acheteur')
-            ->andWhere('acheteur.id = :id')
+            ->select('p.id, p.name, p.description, p.price, p.quantite, p.categorie, p.nbrVentes, users.id, p.img')
+            ->leftJoin('p.users', 'users')
+            ->andWhere('users = :id')
             ->setParameter('id', $id)
             ->orderBy('p.price', 'ASC')
             ->getQuery()

@@ -88,11 +88,19 @@ class User
      */
     private $codePostale;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Panier", mappedBy="user", orphanRemoval=true)
+     */
+    private $productsPanier;
+    
+
 
     public function __construct()
     {
         $this->products = new ArrayCollection();
         $this->panier = new ArrayCollection();
+        $this->ProductsPanier = new ArrayCollection();
+        $this->productsPanier = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -311,5 +319,38 @@ class User
 
         return $this;
     }
+
+    /**
+     * @return Collection|Panier[]
+     */
+    public function getProductsPanier(): Collection
+    {
+        return $this->productsPanier;
+    }
+
+    public function addProductsPanier(Panier $productsPanier): self
+    {
+        if (!$this->productsPanier->contains($productsPanier)) {
+            $this->productsPanier[] = $productsPanier;
+            $productsPanier->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductsPanier(Panier $productsPanier): self
+    {
+        if ($this->productsPanier->contains($productsPanier)) {
+            $this->productsPanier->removeElement($productsPanier);
+            // set the owning side to null (unless already changed)
+            if ($productsPanier->getUser() === $this) {
+                $productsPanier->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+   
 
 }

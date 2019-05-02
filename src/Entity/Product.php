@@ -45,7 +45,6 @@ class Product
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="products")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $vendeur;
 
@@ -69,9 +68,16 @@ class Product
      */
     private $quantite;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Panier", mappedBy="product", orphanRemoval=true)
+     */
+    private $users;
+  
+
     public function __construct()
     {
         $this->attachments = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     
@@ -147,7 +153,7 @@ class Product
     }
 
     public function setVendeur(?User $vendeur): self
-    {
+    {   
         $this->vendeur = $vendeur;
 
         return $this;
@@ -216,6 +222,37 @@ class Product
     public function setQuantite(int $quantite): self
     {
         $this->quantite = $quantite;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Panier[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(Panier $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(Panier $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getProduct() === $this) {
+                $user->setProduct(null);
+            }
+        }
 
         return $this;
     }

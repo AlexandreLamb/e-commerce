@@ -3,6 +3,7 @@
         <br>
         <h1 v-if="totalPanier == 0" align="center">Votre panier est vide, achetez vite !</h1>
         <h1 v-else align="center"> Total de payer : {{totalPanier}} €</h1>
+        <b-button v-on:click="redirectToPaiment">Passer a la caisse</b-button>
         <div class="text-center" v-show="onLoad"> 
             <b-spinner label="Spinning"></b-spinner>
             <b-spinner type="grow" label="Spinning"></b-spinner>
@@ -84,6 +85,13 @@
           console.log(error);
         })
     },
+    redirectToPaiment(){
+      var self =this;
+      if(this.totalPanier != 0 ){
+        this.$router.push({ name: 'paiment', params: { products: self.user.panier, total : self.totalPanier } })
+
+      }
+    }
     },
     created : function(){
       this.getPannier();

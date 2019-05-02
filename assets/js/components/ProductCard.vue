@@ -25,6 +25,8 @@
     <b-button-group>
       <b-button v-on:click="toggleVisibility()" variant="warning">Voir le produit</b-button>
       <b-button v-show="user" v-on:click="addPannier()" variant="success">Ajouter au Panier</b-button>
+          <b-form-select v-model="nbrProduit" :options="options" size="sm" class="mt-3"></b-form-select>
+
     </b-button-group>
     
   </b-card>
@@ -33,6 +35,7 @@
 <script>
       import { isNullOrUndefined } from 'util';
       import axios from 'axios';
+import ProductCardPanierVue from './ProductCardPanier.vue';
   export default {
     props: {
       product : {
@@ -41,7 +44,8 @@
           return{   name : "Pas de nom de produit",
                     description : "Pas de description",
                     price : 0,
-                    categorie : "none"
+                    categorie : "none",
+                    
           }
         }
           }
@@ -53,6 +57,8 @@
          user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
          visibility : false,
          onLoad: null ,
+         options : [],
+         nbrProduit : 0,
       }
     },
     methods: {
@@ -65,9 +71,10 @@
         data: {
           userId: self.user.id,
           productId: self.product.id,
+          quantite : self.nbrProduit
         }
           }).then(function (response) {
-            console.log(response.data);
+            
           })
           .catch(function (error) {
           console.log(error);
@@ -95,6 +102,9 @@
     },
     created : function() {
       this.getImg();
+      for(var i = 0; i < this.product.quantite; i++){
+        this.options[i] = i+1;
+      }
     }
   }
 </script>
