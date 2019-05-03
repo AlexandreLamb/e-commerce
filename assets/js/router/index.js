@@ -11,6 +11,7 @@ import Sportetloisirs from '../views/Sportetloisirs.vue';
 import Musique from '../views/Musique.vue';
 import Profil from '../views/Profil.vue';
 import MesVentes from '../views/MesVentes.vue';
+import Admin from '../views/Admin.vue';
 import Paiment from '../views/Paiment.vue';
 
 
@@ -31,6 +32,7 @@ export default new VueRouter({
         { path: '/profil' , component : Profil},
         { path: '/mesVentes' , component : MesVentes},
         { path: '/addProduct' , component : AddProduct},
+        { path: '/admin' , component : Admin},
         { path: '/paiment', name : 'paiment',  component:Paiment }
          ]
 });
