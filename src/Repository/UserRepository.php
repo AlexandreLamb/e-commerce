@@ -40,10 +40,22 @@ class UserRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
         ->select('p.id, p.email, p.username, p.userlastname, p.adresse, p.ville,
         p.telephone, p.dateNaissance, cb.type, p.pays, p.codePostale,
-        cb.numero, cb.dateValidite')
+        cb.numero, cb.dateValidite, cb.crypto')
             ->leftJoin('p.cb', 'cb')
             ->andWhere('p.email = :email')
             ->setParameter('email', $email)
+            ->getQuery()
+            ->getResult()
+
+        ;
+    }
+    public function findVendeur()
+    {
+        return $this->createQueryBuilder('p')
+        ->select('p.id, p.email, p.username, p.userlastname, p.adresse, p.ville,
+        p.telephone, p.dateNaissance, p.pays, p.codePostale')
+            ->andWhere('p.typeUser = :type')
+            ->setParameter('type', 'V')
             ->getQuery()
             ->getResult()
 

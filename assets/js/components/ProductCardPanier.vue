@@ -14,6 +14,8 @@
   >
   
     <b-card-text> {{product.price}} Euros</b-card-text>
+    <b-card-text>Nombre d'exemplaire : {{product.quantiteProduct}}</b-card-text>
+
          <b-button-group> 
           <b-button  variant="warning">Voir le produit</b-button>
           <b-button v-on:click="deleteProduct()" variant="warning">Supprimer le produit</b-button>

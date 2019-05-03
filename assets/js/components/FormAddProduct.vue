@@ -38,7 +38,7 @@
       </b-form-group>
 
       <b-form-group
-        id="input-group-1"
+        id="input-group-2"
         label="Description:"
         label-for="input-2"
         description=""
@@ -59,19 +59,43 @@
           required
         ></b-form-input>
       </b-form-group>
-        <b-form-group id="input-group-4" label="Photo :" label-for="input-4" >
+        <b-form-group id="input-group-4" label="Photo :" label-for="input-41" >
             <b-form-file
-            @change="onFileChange"
-        id="input-4"
-      v-model="form.file"
-      :state="Boolean(form.file)"
+            @change="onFileChange1"
+        id="input-41"
+      v-model="form.file1"
+      :state="Boolean(form.file1)"
       placeholder="Choisissez une photo"
       drop-placeholder="Drop file here..."
         ></b-form-file>
-    <div class="mt-3">Selected file: {{ form.file ? form.file.name : '' }}</div>
+    <b-form-file
+            @change="onFileChange2"
+        id="input-42"
+      v-model="form.file2"
+      :state="Boolean(form.file2)"
+      placeholder="Choisissez une photo"
+      drop-placeholder="Drop file here..."
+        ></b-form-file>
+    <b-form-file
+            @change="onFileChange3"
+        id="input-43"
+      v-model="form.file3"
+      :state="Boolean(form.file3)"
+      placeholder="Choisissez une photo"
+      drop-placeholder="Drop file here..."
+        ></b-form-file>
+    <div class="mt-3">Selected file : {{ form.file1 ? form.file1.name : '' }} , {{ form.file2 ? form.file2.name : '' }} , {{ form.file3 ? form.file3.name : '' }}</div>
       </b-form-group>
       <b-form-group id="input-group-5" label="Categorie :" label-for="input-5">
             <b-form-select v-model="form.categorie" :options="options"></b-form-select>
+      </b-form-group>
+      <b-form-group id="input-group-6" label="Quantite :" label-for="input-6">
+            <b-form-input
+          id="input-6"
+          v-model="form.quantite"
+          type="number"
+          required
+        ></b-form-input>
       </b-form-group>
       <b-button type="submit" variant="primary">Submit</b-button>
     </b-form>
@@ -129,9 +153,14 @@
           price: '',
           description: '',
           name: '',
-          file:null,
+          file1:null,
+          file2:null,
+          file3:null,
           categorie :null,
-          img : ''
+          img1 : '',
+          img2 : '',
+          img3 : '',
+          quantite : 0,
         },
          user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
          dismissSecs: 5,
@@ -139,13 +168,35 @@
       }
     },
     methods: {
-         onFileChange(e) {
+         onFileChange1(e) {
            var self = this;
-      const file = e.target.files[0];
+      var file = e.target.files[0];
       var reader = new FileReader();
       reader.readAsDataURL(file);
    reader.onload = function () {
-               self.form.img =  reader.result;
+               self.form.img1 =  reader.result;
+
+      };
+      this.imgSrc = URL.createObjectURL(file);
+        },
+        onFileChange2(e) {
+           var self = this;
+      var file = e.target.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+   reader.onload = function () {
+               self.form.img2 =  reader.result;
+
+      };
+      this.imgSrc = URL.createObjectURL(file);
+        },
+        onFileChange3(e) {
+           var self = this;
+      var file = e.target.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+   reader.onload = function () {
+               self.form.img3 =  reader.result;
 
       };
       this.imgSrc = URL.createObjectURL(file);
@@ -163,10 +214,12 @@
          price: self.form.price,
           description: self.form.description,
           name: self.form.name,
-          file: self.form.file.name,
           categorie : self.form.categorie,
           userId : self.user.id,
-          img : self.form.img
+          img1 : self.form.img1,
+          img2 : self.form.img2,
+          img3 : self.form.img3,
+          quantite : self.form.quantite
         }
           }).then(function (response) {
             self.showAlert();

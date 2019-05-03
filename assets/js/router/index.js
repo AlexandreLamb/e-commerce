@@ -12,6 +12,7 @@ import Musique from '../views/Musique.vue';
 import Profil from '../views/Profil.vue';
 import MesVentes from '../views/MesVentes.vue';
 import Admin from '../views/Admin.vue';
+import Paiment from '../views/Paiment.vue';
 
 
 Vue.use(VueRouter);
@@ -32,5 +33,6 @@ export default new VueRouter({
         { path: '/mesVentes' , component : MesVentes},
         { path: '/addProduct' , component : AddProduct},
         { path: '/admin' , component : Admin},
+        { path: '/paiment', name : 'paiment',  component:Paiment }
          ]
 });

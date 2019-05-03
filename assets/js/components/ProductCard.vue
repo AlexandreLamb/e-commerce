@@ -11,9 +11,15 @@
       {{product.description}}
     </b-card-text>
     <b-card-text> {{product.price}} Euros</b-card-text>
+    <b-card-text> Nombre restant : {{product.quantite}}</b-card-text>
+
     <b-button-group>
       <b-button v-on:click="toggleVisibility()" variant="warning">Voir le produit</b-button>
-      <b-button v-on:click="addPannier()" variant="success">Ajouter au Panier</b-button>
+      <b-form-group>
+          <b-form-select required v-model="nbrProduit" :options="options" size="sm" class="mt-3"></b-form-select>
+                <b-button v-show="user" v-on:click="addPannier()" variant="success">Ajouter au Panier</b-button>
+
+      </b-form-group>
     </b-button-group>
     
   </b-card>
@@ -23,6 +29,7 @@
       import { isNullOrUndefined } from 'util';
       import axios from 'axios';
        import Carousel from '../components/CarouselProduit.vue';
+  import ProductCardPanierVue from './ProductCardPanier.vue';
   export default {
     components : {
     carousel : Carousel,
@@ -35,7 +42,8 @@
           return{   name : "Pas de nom de produit",
                     description : "Pas de description",
                     price : 0,
-                    categorie : "none"
+                    categorie : "none",
+                    
           }
         }
           }
@@ -47,6 +55,8 @@
          user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
          visibility : false,
          onLoad: null ,
+         options : [],
+         nbrProduit : 0,
       }
     },
     methods: {
@@ -59,9 +69,10 @@
         data: {
           userId: self.user.id,
           productId: self.product.id,
+          quantite : self.nbrProduit
         }
           }).then(function (response) {
-            console.log(response.data);
+            
           })
           .catch(function (error) {
           console.log(error);
@@ -79,7 +90,7 @@
         method: 'get',
         url: '/get/img/'+self.product.id,
           }).then(function (response) {
-            self.product.img =  response.data.img;
+            self.product.img =  response.data.img2;
             self.onLoad = false;
           })
           .catch(function (error) {
@@ -89,6 +100,11 @@
     },
     created : function() {
       this.getImg();
-    }
+      for(var i = 0; i < this.product.quantite; i++){
+        this.options[i] = i+1;
+      }
+    },
+    
+  
   }
 </script>

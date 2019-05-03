@@ -47,10 +47,17 @@ class ProductController extends AbstractController
         ->getRepository(User::class)    
         ->find($data['userId']);
 
-        $attachments = new Attachments();
-        $entityManager->persist($attachments);
+        $attachment1 = new Attachments();
+        $entityManager->persist($attachment1);
+        $attachment1->setFilename($data['img1']);
 
-        $attachments->setFilename($data['img']);
+        $attachment2 = new Attachments();
+        $entityManager->persist($attachment2);
+        $attachment2->setFilename($data['img2']);
+
+        $attachment3 = new Attachments();
+        $entityManager->persist($attachment3);
+        $attachment3->setFilename($data['img3']);
 
         $product = new Product();
         $product->setName($data['name']);
@@ -59,8 +66,11 @@ class ProductController extends AbstractController
         $product->setCategorie($data['categorie']);
         $product->setNbrVentes(0);
         $product->setVendeur($user);
-        $product->addAttachment($attachments);
-        //$product->setImg($data['img']);
+        $product->addAttachment($attachment1);
+        $product->addAttachment($attachment2);
+        $product->addAttachment($attachment3);
+
+        $product->setQuantite($data['quantite']);
         
 
 
@@ -96,6 +106,42 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("/search/products/advance", methods={"POST"}, name="search_products_advance")
+     */
+    public function searchProductAdvance(Request $request){
+        $data = json_decode($request->getContent(),true);
+        $products = $this->getDoctrine()
+        ->getRepository(Product::class)
+        ->findAll();
+        $productsMatch = array();
+        $idMatch = array();
+        $idRegex = array();
+        $idProduct; 
+        $cmp = 0;
+
+        foreach ($products as $key => $product) {
+            $arrayDescription = explode(' ', $product->getDescription() );
+            foreach ($arrayDescription as $key => $word) {
+                if( in_array($word, $data['input']['words'])   ){
+                    $cmp ++;     
+                }
+            }
+            if( $cmp == count($data['input']['words'])){
+                $productsSearch[] = $this->getDoctrine()
+                ->getRepository(Product::class)
+                ->findProductById($product->getId());
+            }
+
+             $cmp = 0;
+                    
+            
+        }
+        
+        $jsonContent = $this->serializer->serialize($productsSearch, 'json');
+        return new Response($jsonContent);
+    }
+
+    /**
      * @Route("/get/products/{categories}", methods={"GET"}, name="get_products_categorie")
      */
     public function getProductsCategorie(String $categories){
@@ -120,7 +166,12 @@ class ProductController extends AbstractController
         foreach ($product->getAttachments() as $key => $img) {
             $arrayAttachments[] = $img->getFilename();
         }
-        $jsonContent = $this->serializer->serialize(array('img'=>$arrayAttachments[0]), 'json');
+        $jsonContent = $this->serializer->serialize( array(
+            'img1'=>$arrayAttachments[0],
+            'img2'=>$arrayAttachments[1],
+            'img3'=>$arrayAttachments[2]
+    
+    ), 'json');
         return new Response($jsonContent);
 
 

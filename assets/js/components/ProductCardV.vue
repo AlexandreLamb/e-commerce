@@ -16,6 +16,8 @@
       {{product.description}}
     </b-card-text>
     <b-card-text> {{product.price}} Euros</b-card-text>
+    <b-card-text> Nombre restant : {{product.quantite}}</b-card-text>
+
     <b-button-group>
       <b-button href="#" variant="warning">Voir le produit</b-button>
       <b-button v-on:click="onModify = !onModify" variant="info">Modifier le produit</b-button>
