@@ -230,7 +230,7 @@
      
      <b-form-group style="margin-left: 35%;" label="Quel sera votre utilisation de notre site ? ">
           <b-form-radio-group
-            v-model="selected"
+            v-model="form.typeUser"
             :options="options"
             buttons
             button-variant="outline-primary"
@@ -252,7 +252,7 @@
   export default {
     data() {
       return {
-        selected: 'first',
+        
         type : ['MasterCard','Visa'],
         pays: ['France Metropole', 'France Dom Tom', 'Belgique', 'Suisse'],
         options: [
@@ -274,7 +274,8 @@
           date_validite :'',
           codePostale: '',
           typeCb : '',
-          pays: ''
+          pays: '',
+          typeUser : ''
         },
         show: true,
         isSamePassword: false,
@@ -309,6 +310,7 @@
           dateValidite : self.form.date_validite,
           numero  : self.form.numero,
           crypto : self.form.crypto,
+          typeUser : self.form.typeUser,
 
         }
           }).then(function (response) {

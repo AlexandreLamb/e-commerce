@@ -62,6 +62,7 @@ class UserController extends AbstractController
                 $user-> setDateNaissance(NULL);
                 $user->setPays($data['pays']);
                 $user->setCodePostale($data['codePostale']);
+                $user->setTypeUser($data['userType']);
 
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -294,14 +295,24 @@ class UserController extends AbstractController
                 ->findOneBy(['id' => $id]);
         $panier = $user->getProductsPanier();
         foreach ($panier as $key => $product) {
-            $product->setQuantite($product->getQuantite()-1);
-            $product->removeUser($user);
+            $product->setQuantiteProduct(0);
             
             $entityManager->persist($product);
             $entityManager->flush();
             
         }
         return new Response('o');
+    }
+    /**
+     * @Route("/get/vendeurs", methods={"GET"}, name="get_vendeurs")
+     */
+    public function getVendeur(){
+        $vendeurs = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findVendeur();
+                $jsonContent = $this->serializer->serialize($vendeurs, 'json');
+        return new Response($jsonContent);
+        
     }
 }
  

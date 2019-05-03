@@ -49,6 +49,18 @@ class UserRepository extends ServiceEntityRepository
 
         ;
     }
+    public function findVendeur()
+    {
+        return $this->createQueryBuilder('p')
+        ->select('p.id, p.email, p.username, p.userlastname, p.adresse, p.ville,
+        p.telephone, p.dateNaissance, p.pays, p.codePostale')
+            ->andWhere('p.typeUser = :type')
+            ->setParameter('type', 'V')
+            ->getQuery()
+            ->getResult()
+
+        ;
+    }
     
 
     /*

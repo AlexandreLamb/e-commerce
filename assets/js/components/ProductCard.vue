@@ -24,9 +24,11 @@
 
     <b-button-group>
       <b-button v-on:click="toggleVisibility()" variant="warning">Voir le produit</b-button>
-      <b-button v-show="user" v-on:click="addPannier()" variant="success">Ajouter au Panier</b-button>
-          <b-form-select v-model="nbrProduit" :options="options" size="sm" class="mt-3"></b-form-select>
+      <b-form-group>
+          <b-form-select required v-model="nbrProduit" :options="options" size="sm" class="mt-3"></b-form-select>
+                <b-button v-show="user" v-on:click="addPannier()" variant="success">Ajouter au Panier</b-button>
 
+      </b-form-group>
     </b-button-group>
     
   </b-card>
@@ -92,7 +94,7 @@ import ProductCardPanierVue from './ProductCardPanier.vue';
         method: 'get',
         url: '/get/img/'+self.product.id,
           }).then(function (response) {
-            self.product.img =  response.data.img;
+            self.product.img =  response.data.img2;
             self.onLoad = false;
           })
           .catch(function (error) {

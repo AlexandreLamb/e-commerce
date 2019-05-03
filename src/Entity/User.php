@@ -92,6 +92,11 @@ class User
      * @ORM\OneToMany(targetEntity="App\Entity\Panier", mappedBy="user", orphanRemoval=true)
      */
     private $productsPanier;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $typeUser;
     
 
 
@@ -347,6 +352,18 @@ class User
                 $productsPanier->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTypeUser(): ?string
+    {
+        return $this->typeUser;
+    }
+
+    public function setTypeUser(string $typeUser): self
+    {
+        $this->typeUser = $typeUser;
 
         return $this;
     }

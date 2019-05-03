@@ -12,7 +12,7 @@
           </b-row> 
         <b-list-group-item v-for="product in $route.params.products" :key="product.id">         
           <b-row>
-            <b-col> {{product.name}} </b-col> <b-col> {{product.price}}</b-col> <b-col>{{product.quantite}}</b-col>
+            <b-col> {{product.name}} </b-col> <b-col> {{product.price}}</b-col> <b-col>{{product.quantiteProduct}}</b-col>
           </b-row>  
         </b-list-group-item>
         <b-row>
