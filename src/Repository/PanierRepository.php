@@ -32,7 +32,17 @@ class PanierRepository extends ServiceEntityRepository
             ->andWhere('p.user = :userId')
             ->setParameter('userId', $userId)
             ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    public function findOnePanier($productId)
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.product', 'product')
+            ->andWhere('p.product = :productId')
+            ->setParameter('userId', $productId)
+            ->orderBy('p.id', 'ASC')
             ->getQuery()
             ->getResult()
         ;

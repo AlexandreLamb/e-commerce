@@ -1,7 +1,7 @@
 <template>
     <div>
       <b-card>
-  <carousel :tabImg="[product.img,product.img]"></carousel>
+  <carousel :tabImg="tabImage"></carousel>
 
   <div class="text-center" v-show="onLoad" >
             <b-spinner label="Spinning"></b-spinner>
@@ -57,6 +57,7 @@
          onLoad: null ,
          options : [],
          nbrProduit : 0,
+         tabImage : []
       }
     },
     methods: {
@@ -90,7 +91,7 @@
         method: 'get',
         url: '/get/img/'+self.product.id,
           }).then(function (response) {
-            self.product.img =  response.data.img2;
+             self.tabImage =  response.data;
             self.onLoad = false;
           })
           .catch(function (error) {
