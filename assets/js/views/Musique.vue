@@ -49,7 +49,7 @@
           
         },
         methods :{
-            getLivres : function(){
+            getMusiques : function(){
                 var self = this;
                 self.onLoad=true;
                 axios({
@@ -71,7 +71,7 @@
             }
         },
         mounted : function(){
-            this.getLivres();
+            this.getMusiques();
         }
     }
 </script>
