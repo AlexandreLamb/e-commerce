@@ -105,6 +105,8 @@ import ProductCardPanierVue from './ProductCardPanier.vue';
       for(var i = 0; i < this.product.quantite; i++){
         this.options[i] = i+1;
       }
-    }
+    },
+    
+  
   }
 </script>

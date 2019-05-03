@@ -96,6 +96,42 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("/search/products/advance", methods={"POST"}, name="search_products_advance")
+     */
+    public function searchProductAdvance(Request $request){
+        $data = json_decode($request->getContent(),true);
+        $products = $this->getDoctrine()
+        ->getRepository(Product::class)
+        ->findAll();
+        $productsMatch = array();
+        $idMatch = array();
+        $idRegex = array();
+        $idProduct; 
+        $cmp = 0;
+
+        foreach ($products as $key => $product) {
+            $arrayDescription = explode(' ', $product->getDescription() );
+            foreach ($arrayDescription as $key => $word) {
+                if( in_array($word, $data['input']['words'])   ){
+                    $cmp ++;     
+                }
+            }
+            if( $cmp == count($data['input']['words'])){
+                $productsSearch[] = $this->getDoctrine()
+                ->getRepository(Product::class)
+                ->findProductById($product->getId());
+            }
+
+             $cmp = 0;
+                    
+            
+        }
+        
+        $jsonContent = $this->serializer->serialize($productsSearch, 'json');
+        return new Response($jsonContent);
+    }
+
+    /**
      * @Route("/get/products/{categories}", methods={"GET"}, name="get_products_categorie")
      */
     public function getProductsCategorie(String $categories){
