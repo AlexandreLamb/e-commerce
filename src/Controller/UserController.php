@@ -45,10 +45,7 @@ class UserController extends AbstractController
         {
             $data = json_decode($request->getContent(),true);
             
-            
-
-
-
+        
             $user = new User();
             $password = password_hash($data['password'],PASSWORD_BCRYPT); 
                 $user-> setUserlastname($data['userlastname']);
@@ -184,11 +181,29 @@ class UserController extends AbstractController
                 $user-> setAdresse($data['adresse']);
                 $user-> setVille($data['ville']);
                 $user-> setDateNaissance(NULL);
+                $user-> setCodePostale($data['codePostale']);
+                $user-> setPays($data['pays']);
 
+            
+                $cb = $user->getCb();
+                $cb->setNumero($data['numero']);
+                $cb->setType($data['type']);
+                $cb->setDateValidite($data['dateValidite']);
+                $cb->setCrypto($data['crypto']);
+                $cb->setUser($user);
+             
+    
+                
 
             $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($cb);
             $entityManager->persist($user);
             $entityManager->flush();
+            $user = $this->getDoctrine()
+                     ->getRepository(User::class)
+                    ->findOneUser($data['email']);
+
+
             $jsonContent = $this->serializer->serialize($user, 'json');
             return new Response($jsonContent);
 

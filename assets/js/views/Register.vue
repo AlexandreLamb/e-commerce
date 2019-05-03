@@ -69,6 +69,53 @@
         ></b-form-input>
       </b-form-group>
 
+      <div>
+  <b-card bg-variant="light">
+    <b-form-group
+      label-cols-lg="3"
+      label="Shipping Address"
+      label-size="lg"
+      label-class="font-weight-bold pt-0"
+      class="mb-0"
+    >
+      <b-form-group
+        label-cols-sm="3"
+        label="Street:"
+        label-align-sm="right"
+        label-for="nested-street"
+      >
+        <b-form-input id="nested-street"></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        label-cols-sm="3"
+        label="City:"
+        label-align-sm="right"
+        label-for="nested-city"
+      >
+        <b-form-input id="nested-city"></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        label-cols-sm="3"
+        label="State:"
+        label-align-sm="right"
+        label-for="nested-state"
+      >
+        <b-form-input id="nested-state"></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        label-cols-sm="3"
+        label="Country:"
+        label-align-sm="right"
+        label-for="nested-country"
+      >
+        <b-form-input id="nested-country"></b-form-input>
+      </b-form-group>
+    </b-form-group>
+  </b-card>
+</div>
       <b-form-group
         id="input-group-5"
         label="Ville:"
@@ -84,6 +131,7 @@
           placeholder="Entrez votre ville"
         ></b-form-input>
       </b-form-group>
+
       <b-form-group
         id="input-group-12"
         label="Code Postale"
@@ -94,10 +142,14 @@
         <b-form-input
           id="input-12"
           v-model="form.codePostale"
-          type="number"
           required
+           pattern="[0-9]{5}"
+          title="XXXXX"
+          
         ></b-form-input>
       </b-form-group>
+
+
       <b-form-group
         id="input-group-13"
         label="Pays :"
@@ -106,7 +158,7 @@
         
       >
         <b-form-select
-          id="input-3"
+          id="input-13"
           v-model="form.pays"
           :options="pays"
           required
@@ -142,6 +194,8 @@
           type="tel"
           required
           placeholder="Entrez votre numéro de téléphone"
+          pattern="[0]{1}[1-9]{1}[0-9]{8}"
+          title="0XXXXXXXXX"
         ></b-form-input>
       </b-form-group>
 
@@ -187,7 +241,7 @@
         <b-form-select
           id="input-14"
           v-model="form.typeCb"
-          :options="type"
+          :options="typeCb"
           required
         ></b-form-select>
   </b-input-group>
@@ -195,12 +249,11 @@
         <b-form-input
         id="input-10"
           v-model="form.numero"
-          type="number"
+          type="text"
+          pattern="[0-9]{16}"
+          title="XXXXXXXXXXXXXXXX"
           required
           ></b-form-input>
-           <b-form-invalid-feedback :state="validationNumeroCarteBleu">
-       Votre numéro de carte bancaire ne contient pas le bon nombre de chiffre
-      </b-form-invalid-feedback>
       </b-input-group>
       
       
@@ -209,17 +262,21 @@
             <b-form-input
             id="input-11"
               v-model="form.date_validite"
-              type="Date"
+              type="text"
               required
+               pattern="[0-9]{2}/[0-9]{2}"
+                title="XX/XX"
               ></b-form-input>
           </b-input-group>
 
           <b-input-group size="sm" prepend="Cryptogramme">
             <b-form-input
-            id="input-12"
+            id="input-15"
               v-model="form.crypto"
-              type="number"
+              type="text"
               required
+               pattern="[0-9]{3}"
+          title="XXX"
               ></b-form-input>
           </b-input-group>
         </b-form>
@@ -253,8 +310,12 @@
     data() {
       return {
         selected: 'first',
-        type : ['MasterCard','Visa'],
-        pays: ['France Metropole', 'France Dom Tom', 'Belgique', 'Suisse'],
+        typeCb : ['MasterCard','Visa'],
+        pays: [
+          { text: 'France metropolitaine', value: 'France metropolitaine'},
+          { text: 'France dom tom', value: 'France dom tom'},
+          { text: 'Belgique', value: 'Belgique'},
+        ],
         options: [
           { text: 'Acheteur', value: 'A'},
           { text: 'Vendeur', value: 'V'},
@@ -273,13 +334,14 @@
           crypto : '',
           date_validite :'',
           codePostale: '',
-          typeCb : '',
+          typeCb : null,
           pays: ''
         },
         show: true,
         isSamePassword: false,
         isEmailUse:false,
         regex : RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})"),
+        regexTel : RegExp("[0-9]{3}"),
       }
     },
 
@@ -344,7 +406,7 @@
       validation2(){
         return this.regex.test(this.form.password);
       },
-      validationEmail(){
+      validation3(){
       var self= this;
       var isUse;
         axios({
@@ -352,9 +414,6 @@
         url: '/check/user/mail',
         data: {
           email: self.form.email,
-        }, 
-        validationNumeroCarteBleu(){
-          return (this.form.numCarte == 16)
         }
           }).then(function (response) {
              self.isUse = response.data;
@@ -368,6 +427,9 @@
       },
       validationRegex(){
         return this.regex.test(this.form.password);
+      },
+      validationTel(){
+        return this.regexTel.test(this.form.telephone);
       },
       validationEmail(){
       var self= this;
@@ -385,3 +447,4 @@
     }
     }
 </script>
+

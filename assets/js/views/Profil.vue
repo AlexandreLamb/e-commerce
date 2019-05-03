@@ -65,6 +65,9 @@
       class="mb-2 mr-sm-2 mb-sm-0"
       placeholder="entrez votre numero de telephone"
       v-model="user.telephone"
+      pattern="[0]{1}[1-9]{1}[0-9]{8}"
+      title="0XXXXXXXXX"
+      required
     ></b-input>
     <b-button v-on:click="update()" variant="primary">Save</b-button>
   </b-form>
@@ -75,24 +78,39 @@
     <p>Adresse de livraison<b-button class="ml-5" size="sm" v-on:click="toggleAdresse = !toggleAdresse" v-b-toggle.collapse-2 variant="primary">Modifier votre adresse de livraison</b-button>
     </p>
     <h1 v-show="toggleAdresse">
-    {{user.adresse}}, {{user.ville}}
+    {{user.adresse}}, {{user.ville}}, {{user.codePostale}}, {{user.pays}}
     </h1>
     <div>
   <b-collapse id="collapse-2" class="mt-2">
     <b-form inline>
     <label class="sr-only" for="inline-form-input-name">Adresse de livraison</label>
     <b-input
-      id="inline-form-input-name"
+      id="inline-form-input-adresse"
       class="mb-2 mr-sm-2 mb-sm-0"
       placeholder="Entrer votre adresse"
       v-model="user.adresse"
     ></b-input>
     <b-input
-      id="inline-form-input-name"
+      id="inline-form-input-ville"
       class="mb-2 mr-sm-2 mb-sm-0"
       placeholder="Entrer votre ville"
       v-model="user.ville"
     ></b-input>
+    <b-input
+      id="inline-form-input-codePostale"
+      class="mb-2 mr-sm-2 mb-sm-0"
+      placeholder="Entrer votre code postale"
+      v-model="user.codePostale"
+      pattern="[0-9]{5}"
+      title="XXXXX"
+      type="text"
+    ></b-input>
+    <b-form-select
+          id="input-3"
+          v-model="user.pays"
+          :options="pays"
+          required
+        ></b-form-select>
     <b-button v-on:click="update()" variant="primary">Save</b-button>
   </b-form>
   </b-collapse>
@@ -142,24 +160,47 @@
   <b-collapse id="collapse-4" class="mt-2">
     <b-form inline>
     <label class="sr-only" for="inline-form-input-name"></label>
+     
+     <b-input-group           
+       prepend="Type de Carte Bancaire">
+        <b-form-select
+          id="inline-form-input-name"
+          v-model="user.type"
+          :options="type"
+          required
+        ></b-form-select>
+  </b-input-group>
+
     <b-input
       id="inline-form-input-name"
-      class="mb-2 mr-sm-2 mb-sm-0"
-      placeholder="Entrer votre numéro de carte bancaire"
-      v-model="numcarte"
+      class="mb-1 mr-sm-1 mb-sm-0"
+      placeholder="Numéro de carte bancaire"
+      v-model="user.numero"
+      pattern="[0-9]{16}"
+      title="XXXXXXXXXXXXXXXX"
+      type="text"
+      required
     ></b-input>
+    
     <b-input
       id="inline-form-input-name"
       class="mb-2 mr-sm-2 mb-sm-0"
-      placeholder="Entrer la date de validité de votre carte"
-      v-model="DateCarte"
+      placeholder="Date de validité"
+      v-model="user.dateValidite"
+      pattern="[0-1]{1}[0-2]/[1-2]{1}[0-9]{1}"
+      title="XX/XX"
+      type="text"
+      required
     ></b-input>
         <b-input
       id="inline-form-input-name"
       class="mb-2 mr-sm-2 mb-sm-0"
-      type="num"
-      placeholder="Entrer le cryptogramme de votre carte bancaire"
-      v-model="CryptoCarte"
+      type="text"
+      placeholder="Cryptogramme"
+      v-model="user.crypto"
+      pattern="[0-9]{3}"
+      title="XXX"
+      required
     ></b-input>
     <b-button v-on:click="update()" variant="primary">Save</b-button>
   </b-form>
@@ -168,11 +209,12 @@
 
     <hr class="my-4">
     <div class="card bg-dark text-white">
-  <img class="card-img" src="../../pics/cartebleu2.png" alt="Card image">
+  <img class="card-img" src="../../pics/cartebleu2.jpg" alt="Card image">
   <div class="card-img-overlay">
-    <h2 class="card-text-1">{{numcarte}} </h2>
-        <h2 class="card-text-2"> {{DateCarte}}</h2>
     <h1 class="card-text-3"> Mr {{user.userlastname}}  {{user.username}} </h1>
+    <h1 class="card-text-4"> {{user.type}}</h1>
+    <h2 class="card-text-1">{{user.numero.substring(0,4)}} &nbsp; &nbsp; &nbsp; &nbsp; {{user.numero.substring(4,8)}} &nbsp; &nbsp; &nbsp; &nbsp;{{user.numero.substring(8,12)}} &nbsp; &nbsp; &nbsp; &nbsp; {{user.numero.substring(12,16)}} </h2>
+        <h2 class="card-text-2"> {{user.dateValidite}}</h2>
   </div>
 </div>
   </b-jumbotron>
@@ -189,13 +231,13 @@
         },
          data () {
           return {
+            pays: ['France Metropole', 'France Dom Tom', 'Belgique', 'Suisse'],
+            type : ['MasterCard','Visa'],
               user : isNullOrUndefined(localStorage.user) ? null : JSON.parse(localStorage.user),
               togglePhone : true,
               toggleAdresse : true,
               toggleCarte : true,
-              numcarte : 1234123412341234,
-              CryptoCarte : 180, 
-              DateCarte : 1212,
+              
           }
         },
         methods: {
@@ -215,6 +257,12 @@ axios({
           date_naissance : self.user.date_naissance,
           ville: self.user.ville,
           adresse: self.user.adresse,
+          crypto: self.user.crypto,
+          dateValidite : self.user.dateValidite,
+          type : self.user.type,
+          numero :self.user.numero,
+          codePostale :self.user.codePostale,
+          pays : self.user.pays,
         }
           }).then(function (response) {
            localStorage.user = JSON.stringify(response.data); 
@@ -227,24 +275,34 @@ axios({
           console.log(error);
         })
           }
-        }
+        },
+    
     }
 </script>
 
 <style>
   .card-text-1 {
-    margin-left: 7%;
-    margin-top: 41%;
+    margin-left: 10%;
+    margin-top: 16%;
     font-size: 3rem;
+    color: black;
   }
 
   .card-text-2 {
-    margin-left: 50%;
+    margin-left: 70%;
     font-size: 2rem;
+  }
+
+  .card-text-4{
+    margin-top: 20%;
+    margin-left: 30%;
+    font-size: 3rem;
   }
 
   .card-text-3 {
     margin-left: 11%;
     font-size: 2rem;
+    color: black;
+    margin-top: 9%;
   }
 </style>
