@@ -7,18 +7,19 @@
       controls
       indicators
       background="#ababab"
-      img-width="1024"
-      img-height="480"
+      img-height="1024"
+      img-width="480"
       style="text-shadow: 1px 1px 2px #333;"
       @sliding-start="onSlideStart"
       @sliding-end="onSlideEnd"
+      
     >
       <b-carousel-slide v-for="img in tabImg" :key="img">
         <img
           slot="img"
           class="d-block img-fluid w-100"
-          width="1024"
-          height="480"
+          height="1024"
+          width="480"
           :src="img"
           alt="image slot"
         >

@@ -1,6 +1,7 @@
 <template>
     <div>
-  <carousel :tabImg="[product.img]"></carousel>
+      <b-card>
+  <carousel :tabImg="[product.img,product.img]"></carousel>
 
   <div class="text-center" v-show="onLoad" >
             <b-spinner label="Spinning"></b-spinner>
