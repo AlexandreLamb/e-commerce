@@ -30,8 +30,9 @@
 <script>
   import FormAddProduct from '../components/FormAddProduct.vue'
    export default {
+     
     components:{
-      formAddProduct : FormAddProduct
+      formAddProduct : FormAddProduct,
     },
     props: {
       product : {

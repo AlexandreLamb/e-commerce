@@ -2,7 +2,15 @@
     <div>   
         <carousel></carousel>
                 <b-form-input type="text" v-model="searchName" placeholder="Search" @keyup.enter="search()" ></b-form-input>
-
+                <b-form-input type="text" v-model="searchAdvanced" placeholder="Search Advance" @keyup.enter="searchAdvance()" ></b-form-input>
+         <b-row v-show="toggleSearchAdvance">
+             
+            <p  >Resultat de la recherche </p>
+            <product-card @cliked="toggleVisibility" v-for="product in productsSearch" :key="product.id" :product="product" class="col-sm-6 col-md-4 col-lg-3"></product-card>
+         <button type="button" class="close" v-on:click="toggleSearchAdvance =! toggleSearchAdvance" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+         </b-row>
         <h1> Nos meilleures ventes </h1>
         <div class="text-center" v-show="onLoad">
             <b-spinner label="Spinning"></b-spinner>
@@ -43,11 +51,14 @@
         },
          data () {
           return {
+              toggleSearchAdvance : false,
               product: {},
             products : [],
+            productsSearch:[],
             onLoad : true,
             searchName: "",
             showCollapse : false,
+            searchAdvanced : '',
 
           }
           
@@ -95,7 +106,30 @@
                 console.log(value);
                 this.product = value;
                 this.showCollapse = true;
-                window.scrollTo({ top: 500, behavior: 'smooth' })                 
+                window.scrollTo({ top: 780, behavior: 'smooth' })                 
+            },
+            searchAdvance(){
+                this.productsSearch = [];
+                var self = this;
+                var inputSearch = this.searchAdvanced.split(' ');
+                var inputObj = {
+                    'words' : inputSearch
+                }
+                console.log(inputObj)
+                axios({
+                 method: 'post',
+                url: '/search/products/advance',
+                data: {
+                    input : inputObj,
+                }
+          }).then(function (response) {
+              console.log(response.data)
+              self.productsSearch = response.data;
+              self.toggleSearchAdvance=true;
+          })
+          .catch(function (error) {
+          console.log(error);
+        })
             }
         },
         created: function(){

@@ -59,6 +59,7 @@ class UserController extends AbstractController
                 $user-> setDateNaissance(NULL);
                 $user->setPays($data['pays']);
                 $user->setCodePostale($data['codePostale']);
+                $user->setTypeUser($data['typeUser']);
 
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -234,6 +235,9 @@ class UserController extends AbstractController
             $product = $this->getDoctrine()
                 ->getRepository(Product::class)
                 ->findOneBy(['id' => $data['productId']]);
+                $panier = $this->getDoctrine()
+                ->getRepository(Panier::class)
+                ->findOneBy(['product' => $product]);
 
             $user = $this->getDoctrine()
                 ->getRepository(User::class)
@@ -242,7 +246,7 @@ class UserController extends AbstractController
                 if (!$product && !$user){
                     return new Response('false');
                 } else {
-                   $user->removeProductsPanier($product);
+                   $user->removeProductsPanier($panier);
                    $entityManager->persist($user);
                    $entityManager->flush();
                    $panier = $this->getDoctrine()->getRepository(Product::class)
@@ -309,14 +313,25 @@ class UserController extends AbstractController
                 ->findOneBy(['id' => $id]);
         $panier = $user->getProductsPanier();
         foreach ($panier as $key => $product) {
-            $product->setQuantite($product->getQuantite()-1);
-            $product->removeUser($user);
-            
+            $product->getProduct()->setQuantite($product->getProduct()->getQuantite() - $product->getQuantiteProduct());
+            $product->setQuantiteProduct(0);
+
             $entityManager->persist($product);
             $entityManager->flush();
             
         }
         return new Response('o');
+    }
+    /**
+     * @Route("/get/vendeurs", methods={"GET"}, name="get_vendeurs")
+     */
+    public function getVendeur(){
+        $vendeurs = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findVendeur();
+                $jsonContent = $this->serializer->serialize($vendeurs, 'json');
+        return new Response($jsonContent);
+        
     }
 }
  

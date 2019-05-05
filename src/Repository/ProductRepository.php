@@ -36,11 +36,24 @@ class ProductRepository extends ServiceEntityRepository
     public function findAllProduct()
     {
         return $this->createQueryBuilder('p')
-            ->select('p.id, p.name, p.description, p.quantite, p.price, p.categorie, p.nbrVentes, (p.vendeur), (p.acheteur), p.img')
+            ->select('p.id, p.name, p.description, p.quantite, p.price, p.categorie, p.nbrVentes, p.img')
             ->andWhere('p.quantite > 0')
             ->orderBy('p.price', 'ASC')
             ->getQuery()
             ->getResult()
+        ;
+    }
+    public function findProductById($id)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.name, p.description, p.quantite, p.price, p.categorie, p.nbrVentes, p.img')
+            ->andWhere('p.quantite > 0')
+            ->andWhere('p.id = :id')
+            ->setParameter('id', $id)
+            ->orderBy('p.price', 'ASC')
+            ->getQuery()
+            ->getOneOrNullResult()
+        
         ;
     }
     public function findAllProductByCat($value)

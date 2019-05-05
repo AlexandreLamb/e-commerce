@@ -287,7 +287,7 @@
      
      <b-form-group style="margin-left: 35%;" label="Quel sera votre utilisation de notre site ? ">
           <b-form-radio-group
-            v-model="selected"
+            v-model="form.typeUser"
             :options="options"
             buttons
             button-variant="outline-primary"
@@ -316,6 +316,7 @@
           { text: 'France dom tom', value: 'France dom tom'},
           { text: 'Belgique', value: 'Belgique'},
         ],
+
         options: [
           { text: 'Acheteur', value: 'A'},
           { text: 'Vendeur', value: 'V'},
@@ -335,7 +336,8 @@
           date_validite :'',
           codePostale: '',
           typeCb : null,
-          pays: ''
+          pays: '',
+          typeUser : ''
         },
         show: true,
         isSamePassword: false,
@@ -371,6 +373,7 @@
           dateValidite : self.form.date_validite,
           numero  : self.form.numero,
           crypto : self.form.crypto,
+          typeUser : self.form.typeUser,
 
         }
           }).then(function (response) {

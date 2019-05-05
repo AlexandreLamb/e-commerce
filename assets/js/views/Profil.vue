@@ -25,7 +25,7 @@
 
     <template slot="lead">
       Vos informations sont tenus confidentiels par Boomerang Corporation. Boomerang Corporation
-      s'engage à ne pas les diffuser sans votre consentement (clin d'oeil) </br>
+      s'engage à ne pas les diffuser sans votre consentement (clin d'oeil) <br>
     </template>
 
     <hr class="my-4">
