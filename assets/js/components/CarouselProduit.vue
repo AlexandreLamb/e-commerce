@@ -41,12 +41,12 @@
     },
     props:{
         tabImg: {
-            type : Array,
+            type : Object,
             default () {
-                return ['http://calgarypma.ca/wp-content/uploads/2018/01/default-thumbnail.jpg',
-                        'http://calgarypma.ca/wp-content/uploads/2018/01/default-thumbnail.jpg',
-                        'http://calgarypma.ca/wp-content/uploads/2018/01/default-thumbnail.jpg'
-                ]
+                return {'img1' :'http://calgarypma.ca/wp-content/uploads/2018/01/default-thumbnail.jpg',
+                        'img2':'http://calgarypma.ca/wp-content/uploads/2018/01/default-thumbnail.jpg',
+                        'img3':'http://calgarypma.ca/wp-content/uploads/2018/01/default-thumbnail.jpg'
+                }
             }
         }
     },
