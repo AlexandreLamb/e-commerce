@@ -345,7 +345,12 @@ class UserController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($user);
         $entityManager->flush();
-        return new Response(getVendeur());
+        
+        $vendeurs = $this->getDoctrine()
+        ->getRepository(User::class)
+        ->findVendeur();
+        $jsonContent = $this->serializer->serialize($vendeurs, 'json');
+        return new Response($jsonContent);
     }
 }
  

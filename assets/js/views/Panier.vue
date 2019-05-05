@@ -60,7 +60,7 @@
       countPrice(panier){
         var total = 0;
         panier.forEach(element => {
-          total += element.price;
+          total += element.price*element.quantiteProduct;
         });
         return total;
       },
