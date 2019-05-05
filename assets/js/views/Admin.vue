@@ -2,7 +2,7 @@
     <div> 
         <h1 align="center">Espace administrateur</h1> 
         <br>
-        <h1>Mes vendeurs   <b-button variant="success">Ajouter un vendeur</b-button></h1>
+        <h1>Mes vendeurs </h1>
          <div class="text-center" v-show="onLoad">
             <b-spinner label="Spinning"></b-spinner>
             <b-spinner type="grow" label="Spinning"></b-spinner>
@@ -12,7 +12,7 @@
             <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
         </div>
         <b-row>
-            <product-card-vendeur v-for="user in user" :key="user.id" :product="livre" class="col-sm-6 col-md-4 col-lg-3" @cliked="toggleVisibility"></product-card-vendeur>
+            <product-card-vendeur v-for="vendeur in vendeurs" :key="vendeur.id" :vendeur="vendeur" class="col-sm-6 col-md-4 col-lg-3" @cliked="toggleVisibility"></product-card-vendeur>
         </b-row>
         <br>
         <h1>Mes produits</h1><br>
@@ -142,7 +142,7 @@
         },
          data () {
           return {
-            user : [],
+            vendeurs : [],
             livres : [],
             vetements : [],
             musiques : [],
@@ -217,12 +217,27 @@
                 this.showCollapse = true;
                 window.scrollTo({ top: 0, behavior: 'smooth' })                 
             },
+            getVendeur(){
+                var self = this;
+                self.onLoad=true;
+                axios({
+                    method: 'get',
+                    url: '/get/vendeurs',
+                }).then(function (response) {
+                self.vendeurs = response.data;
+                self.onLoad=false;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+            }
         },
         mounted : function(){
             this.getLivres();
             this.getVetements();
             this.getSportEtLoisirs();
             this.getMusiques();
+            this.getVendeur();
         },
     }
 </script>

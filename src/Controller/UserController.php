@@ -333,5 +333,19 @@ class UserController extends AbstractController
         return new Response($jsonContent);
         
     }
+
+    /**
+     * @Route("/delete/vendeurs/{id}", methods={"GET"}, name="delete_vendeur")
+     */
+    public function deleteVendeur(Int $id){
+        $user = $this->getDoctrine()
+        ->getRepository(User::class)
+        ->findOneBy(['id' => $id]);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($user);
+        $entityManager->flush();
+        return new Response(getVendeur());
+    }
 }
  
