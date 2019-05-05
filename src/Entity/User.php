@@ -43,9 +43,69 @@ class User
      */
     private $products;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="acheteur")
+     */
+    private $panier;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $userlastname;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $adresse;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $ville;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $telephone;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateNaissance;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\CarteBleu", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $cb;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $pays;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $codePostale;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Panier", mappedBy="user", orphanRemoval=true)
+     */
+    private $productsPanier;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $typeUser;
+    
+
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->panier = new ArrayCollection();
+        $this->ProductsPanier = new ArrayCollection();
+        $this->productsPanier = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,4 +191,183 @@ class User
 
         return $this;
     }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getPanier(): Collection
+    {
+        return $this->panier;
+    }
+
+    public function addPanier(Product $panier): self
+    {
+        if (!$this->panier->contains($panier)) {
+            $this->panier[] = $panier;
+            $panier->setAcheteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanier(Product $panier): self
+    {
+        if ($this->panier->contains($panier)) {
+            $this->panier->removeElement($panier);
+            // set the owning side to null (unless already changed)
+            if ($panier->getAcheteur() === $this) {
+                $panier->setAcheteur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUserlastname(): ?string
+    {
+        return $this->userlastname;
+    }
+
+    public function setUserlastname(string $userlastname): self
+    {
+        $this->userlastname = $userlastname;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getDateNaissance(): ?\DateTimeInterface
+    {
+        return $this->dateNaissance;
+    }
+
+    public function setDateNaissance(?\DateTimeInterface $dateNaissance): self
+    {
+        $this->dateNaissance = $dateNaissance;
+
+        return $this;
+    }
+
+    public function getCb(): ?CarteBleu
+    {
+        return $this->cb;
+    }
+
+    public function setCb(?CarteBleu $cb): self
+    {
+        $this->cb = $cb;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $cb === null ? null : $this;
+        if ($newUser !== $cb->getUser()) {
+            $cb->setUser($newUser);
+        }
+
+        return $this;
+    }
+
+    public function getPays(): ?string
+    {
+        return $this->pays;
+    }
+
+    public function setPays(string $pays): self
+    {
+        $this->pays = $pays;
+
+        return $this;
+    }
+
+    public function getCodePostale(): ?int
+    {
+        return $this->codePostale;
+    }
+
+    public function setCodePostale(int $codePostale): self
+    {
+        $this->codePostale = $codePostale;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Panier[]
+     */
+    public function getProductsPanier(): Collection
+    {
+        return $this->productsPanier;
+    }
+
+    public function addProductsPanier(Panier $productsPanier): self
+    {
+        if (!$this->productsPanier->contains($productsPanier)) {
+            $this->productsPanier[] = $productsPanier;
+            $productsPanier->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductsPanier(Panier $productsPanier): self
+    {
+        if ($this->productsPanier->contains($productsPanier)) {
+            $this->productsPanier->removeElement($productsPanier);
+            // set the owning side to null (unless already changed)
+            if ($productsPanier->getUser() === $this) {
+                $productsPanier->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTypeUser(): ?string
+    {
+        return $this->typeUser;
+    }
+
+    public function setTypeUser(string $typeUser): self
+    {
+        $this->typeUser = $typeUser;
+
+        return $this;
+    }
+
+   
+
 }

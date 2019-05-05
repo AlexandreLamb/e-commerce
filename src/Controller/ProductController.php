@@ -3,6 +3,7 @@
 namespace App\Controller;
 use App\Entity\Product;
 use App\Entity\User;
+use App\Entity\Attachments;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,26 +34,50 @@ class ProductController extends AbstractController
         $this->serializer = new Serializer(array($this->normalizer), array($this->encoder));
        
     }
+
     /**
-     * @Route("/register/product", name="product")
+     * @Route("/add/product", methods={"POST"}, name="add_product")
      */
-    public function product()
+    public function product(Request $request)
     {
-        
+        $data = json_decode($request->getContent(),true);
+
         $entityManager = $this->getDoctrine()->getManager();
+        $user = $this->getDoctrine()
+        ->getRepository(User::class)    
+        ->find($data['userId']);
+
+        $attachment1 = new Attachments();
+        $entityManager->persist($attachment1);
+        $attachment1->setFilename($data['img1']);
+
+        $attachment2 = new Attachments();
+        $entityManager->persist($attachment2);
+        $attachment2->setFilename($data['img2']);
+
+        $attachment3 = new Attachments();
+        $entityManager->persist($attachment3);
+        $attachment3->setFilename($data['img3']);
 
         $product = new Product();
-        $product->setName('Keyboard');
-        $product->setPrice(1999);
-        $product->setDescription('Ergonomic and stylish!');
+        $product->setName($data['name']);
+        $product->setPrice($data['price']);
+        $product->setDescription($data['description']);
+        $product->setCategorie($data['categorie']);
+        $product->setNbrVentes(0);
+        $product->setVendeur($user);
+        $product->addAttachment($attachment1);
+        $product->addAttachment($attachment2);
+        $product->addAttachment($attachment3);
 
-        // tell Doctrine you want to (eventually) save the Product (no queries yet)
+        $product->setQuantite($data['quantite']);
+        
+
+
         $entityManager->persist($product);
-
-        // actually executes the queries (i.e. the INSERT query)
         $entityManager->flush();
 
-        return new Response('Saved new product with id ' .$product->getId());
+        return new Response("product add");
     }
 
     /**
@@ -62,8 +87,94 @@ class ProductController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $products = $this->getDoctrine()
         ->getRepository(Product::class)
-        ->findAll();
+        ->findAllProduct();
         $jsonContent = $this->serializer->serialize($products, 'json');
         return new Response($jsonContent);
     }
+    
+    /**
+     * @Route("/search/products/{name}", methods={"GET"}, name="search_products")
+     */
+    public function searchProduct(String $name){
+        $entityManager = $this->getDoctrine()->getManager();
+        $products = $this->getDoctrine()
+        ->getRepository(Product::class)
+        ->findByLetter($name);
+
+        $jsonContent = $this->serializer->serialize($products, 'json');
+        return new Response($jsonContent);
+    }
+
+    /**
+     * @Route("/search/products/advance", methods={"POST"}, name="search_products_advance")
+     */
+    public function searchProductAdvance(Request $request){
+        $data = json_decode($request->getContent(),true);
+        $products = $this->getDoctrine()
+        ->getRepository(Product::class)
+        ->findAll();
+        $productsMatch = array();
+        $idMatch = array();
+        $idRegex = array();
+        $idProduct; 
+        $cmp = 0;
+
+        foreach ($products as $key => $product) {
+            $arrayDescription = explode(' ', $product->getDescription() );
+            foreach ($arrayDescription as $key => $word) {
+                if( in_array($word, $data['input']['words'])   ){
+                    $cmp ++;     
+                }
+            }
+            if( $cmp == count($data['input']['words'])){
+                $productsSearch[] = $this->getDoctrine()
+                ->getRepository(Product::class)
+                ->findProductById($product->getId());
+            }
+
+             $cmp = 0;
+                    
+            
+        }
+        
+        $jsonContent = $this->serializer->serialize($productsSearch, 'json');
+        return new Response($jsonContent);
+    }
+
+    /**
+     * @Route("/get/products/{categories}", methods={"GET"}, name="get_products_categorie")
+     */
+    public function getProductsCategorie(String $categories){
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $products = $this->getDoctrine()
+        ->getRepository(Product::class)
+        ->findAllProductByCat($categories);
+        $jsonContent = $this->serializer->serialize($products, 'json');
+        return new Response($jsonContent);
+    }
+
+    /**
+     * @Route("get/img/{idProduct}", methods={"GET"}, name="get_img")
+     */
+     public function getImg(Int $idProduct){
+        $entityManager = $this->getDoctrine()->getManager();
+        $product = $this->getDoctrine()
+        ->getRepository(Product::class)
+        ->find($idProduct); 
+        $arrayAttachments = array();
+        foreach ($product->getAttachments() as $key => $img) {
+            $arrayAttachments[] = $img->getFilename();
+        }
+        $jsonContent = $this->serializer->serialize( array(
+            'img1'=>$arrayAttachments[0],
+            'img2'=>$arrayAttachments[1],
+            'img3'=>$arrayAttachments[2]
+    
+    ), 'json');
+        return new Response($jsonContent);
+
+
+     }
+    
 }

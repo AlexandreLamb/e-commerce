@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,14 +45,42 @@ class Product
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="products")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $vendeur;
 
     /**
-     * @ORM\Column(type="blob", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="panier")
      */
-    private $photo;
+    private $acheteur;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $img;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Attachments", mappedBy="Product", orphanRemoval=true)
+     */
+    private $attachments;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $quantite;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Panier", mappedBy="product", orphanRemoval=true)
+     */
+    private $users;
+  
+
+    public function __construct()
+    {
+        $this->attachments = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
+
+    
 
     public function getId(): ?int
     {
@@ -123,21 +153,109 @@ class Product
     }
 
     public function setVendeur(?User $vendeur): self
-    {
+    {   
         $this->vendeur = $vendeur;
 
         return $this;
     }
 
-    public function getPhoto()
+    public function getAcheteur(): ?User
     {
-        return $this->photo;
+        return $this->acheteur;
     }
 
-    public function setPhoto($photo): self
+    public function setAcheteur(?User $acheteur): self
     {
-        $this->photo = $photo;
+        $this->acheteur = $acheteur;
 
         return $this;
     }
+
+    public function getImg()
+    {
+        return $this->img;
+    }
+
+    public function setImg($img): self
+    {
+        $this->img = $img;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Attachments[]
+     */
+    public function getAttachments(): Collection
+    {
+        return $this->attachments;
+    }
+
+    public function addAttachment(Attachments $attachment): self
+    {
+        if (!$this->attachments->contains($attachment)) {
+            $this->attachments[] = $attachment;
+            $attachment->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttachment(Attachments $attachment): self
+    {
+        if ($this->attachments->contains($attachment)) {
+            $this->attachments->removeElement($attachment);
+            // set the owning side to null (unless already changed)
+            if ($attachment->getProduct() === $this) {
+                $attachment->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getQuantite(): ?int
+    {
+        return $this->quantite;
+    }
+
+    public function setQuantite(int $quantite): self
+    {
+        $this->quantite = $quantite;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Panier[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(Panier $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(Panier $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getProduct() === $this) {
+                $user->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 }
